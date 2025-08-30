@@ -1,9 +1,28 @@
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then((registration) => {
-      console.log('Service Worker 登録成功:', registration.scope);
-    }).catch((err) => {
-      console.log('Service Worker 登録失敗:', err);
-    });
-  });
-}
+const CACHE_NAME = 'my-pwa-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/styles/main.css',
+  '/scripts/main.js'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        return cache.addAll(urlsToCache);
+      })
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
+  );
+});
