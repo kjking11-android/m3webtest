@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Material You テスター</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<style>
+
+/*
+
+* Material You Colors
+
+* m3.material.ioのカラーパレットを参考に、3つのテーマ（青、青緑、紫）を定義
+
+* https://m3.material.io/theme-builder#/custom
+
+*/
+
+
+
+/* 青テーマ */
+
+:root {
+
+--md-sys-color-primary-light: #0061a4;
+
+--md-sys-color-on-primary-light: #ffffff;
+
+--md-sys-color-primary-container-light: #d0e4ff;
+
+--md-sys-color-on-primary-container-light: #001d36;
+
+--md-sys-color-background-light: #fdfcff;
+
+--md-sys-color-on-background-light: #1a1c1e;
+
+--md-sys-color-surface-light: #fdfcff;
+
+--md-sys-color-on-surface-light: #1a1c1e;
+
+--md-sys-color-surface-variant-light: #dfe2eb;
+
+--md-sys-color-on-surface-variant-light: #43474e;
+
+--md-sys-color-outline-light: #73777f;
+
+
+
+--md-sys-color-primary-dark: #9fcbff;
+
+--md-sys-color-on-primary-dark: #003258;
+
+--md-sys-color-primary-container-dark: #00497d;
+
+--md-sys-color-on-primary-container-dark: #d0e4ff;
+
+--md-sys-color-background-dark: #1a1c1e;
+
+--md-sys-color-on-background-dark: #e3e2e6;
+
+--md-sys-color-surface-dark: #1a1c1e;
+
+--md-sys-color-on-surface-dark: #e3e2e6;
+
+--md-sys-color-surface-variant-dark: #43474e;
+
+--md-sys-color-on-surface-variant-dark: #c3c6cf;
+
+--md-sys-color-outline-dark: #8d9199;
+
+}
+
+
+
+/* 青緑テーマ */
+
+.theme-teal {
+
+--md-sys-color-primary-light: #006a60;
+
+--md-sys-color-on-primary-light: #ffffff;
+
+--md-sys-color-primary-container-light: #6ff7e4;
+
+--md-sys-color-on-primary-container-light: #00201d;
+
+--md-sys-color-background-light: #fbfdfc;
+
+--md-sys-color-on-background-light: #191c1b;
+
+--md-sys-color-surface-light: #fbfdfc;
+
+--md-sys-color-on-surface-light: #191c1b;
+
+--md-sys-color-surface-variant-light: #dae5e3;
+
+--md-sys-color-on-surface-variant-light: #3f4947;
+
+--md-sys-color-outline-light: #6f7978;
+
+--md-sys-color-primary-dark: #4fdcc8;
+
+--md-sys-color-on-primary-dark: #003732;
+
+--md-sys-color-primary-container-dark: #005049;
+
+--md-sys-color-on-primary-container-dark: #6ff7e4;
+
+--md-sys-color-background-dark: #191c1b;
+
+--md-sys-color-on-background-dark: #e0e3e2;
+
+--md-sys-color-surface-dark: #191c1b;
+
+--md-sys-color-on-surface-dark: #e0e3e2;
+
+--md-sys-color-surface-variant-dark: #3f4947;
+
+--md-sys-color-on-surface-variant-dark: #bec9c7;
+
+--md-sys-color-outline-dark: #899391;
+
+}
+
+
+
+/* 紫テーマ */
+
+.theme-purple {
+
+--md-sys-color-primary-light: #7b4f9f;
+
+--md-sys-color-on-primary-light: #ffffff;
+
+--md-sys-color-primary-container-light: #f0dbff;
+
+--md-sys-color-on-primary-container-light: #2d0050;
+
+--md-sys-color-background-light: #fffbff;
+
+--md-sys-color-on-background-light: #1e1a21;
+
+--md-sys-color-surface-light: #fffbff;
+
+--md-sys-color-on-surface-light: #1e1a21;
+
+--md-sys-color-surface-variant-light: #eaddf8;
+
+--md-sys-color-on-surface-variant-light: #4c4451;
+
+--md-sys-color-outline-light: #7e7486;
+
+
+
+--md-sys-color-primary-dark: #f0dbff;
+
+--md-sys-color-on-primary-dark: #471e6d;
+
+--md-sys-color-primary-container-dark: #613685;
+
+--md-sys-color-on-primary-container-dark: #f0dbff;
+
+--md-sys-color-background-dark: #1e1a21;
+
+--md-sys-color-on-background-dark: #e9e0e8;
+
+--md-sys-color-surface-dark: #1e1a21;
+
+--md-sys-color-on-surface-dark: #e9e0e8;
+
+--md-sys-color-surface-variant-dark: #4c4451;
+
+--md-sys-color-on-surface-variant-dark: #ccc3d1;
+
+--md-sys-color-outline-dark: #988d9c;
+
+}
+
+
+
+/* 現在のテーマカラー変数（デフォルトはライトモード） */
+
+:root,
+
+.light-mode {
+
+--md-sys-color-primary: var(--md-sys-color-primary-light);
+
+--md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
+
+--md-sys-color-primary-container: var(--md-sys-color-primary-container-light);
+
+--md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-light);
+
+--md-sys-color-background: var(--md-sys-color-background-light);
+
+--md-sys-color-on-background: var(--md-sys-color-on-background-light);
+
+--md-sys-color-surface: var(--md-sys-color-surface-light);
+
+--md-sys-color-on-surface: var(--md-sys-color-on-surface-light);
+
+--md-sys-color-surface-variant: var(--md-sys-color-surface-variant-light);
+
+--md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-light);
+
+--md-sys-color-outline: var(--md-sys-color-outline-light);
+
+}
+
+
+
+/* ダークモード時のカラー変数 */
+
+.dark-mode {
+
+--md-sys-color-primary: var(--md-sys-color-primary-dark);
+
+--md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
+
+--md-sys-color-primary-container: var(--md-sys-color-primary-container-dark);
+
+--md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-dark);
+
+--md-sys-color-background: var(--md-sys-color-background-dark);
+
+--md-sys-color-on-background: var(--md-sys-color-on-background-dark);
+
+--md-sys-color-surface: var(--md-sys-color-surface-dark);
+
+--md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
+
+--md-sys-color-surface-variant: var(--md-sys-color-surface-variant-dark);
+
+--md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-dark);
+
+--md-sys-color-outline: var(--md-sys-color-outline-dark);
+
+}
+
+
+
+/* 全体スタイル */
+
+body {
+
+font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+
+margin: 0;
+
+padding-bottom: 64px; /* ナビゲーションバーの高さ分 */
+
+background-color: var(--md-sys-color-background);
+
+color: var(--md-sys-color-on-background);
+
+transition: background-color 0.3s, color 0.3s;
+
+min-height: 100vh;
+
+}
+
+
+
+.container {
+
+padding: 16px;
+
+max-width: 800px;
+
+margin: 0 auto;
+
+}
+
+
+
+/* コンテンツ表示エリア */
+
+.content {
+
+display: none;
+
+}
+
+.content.active {
+
+display: block;
+
+}
+
+/* ボタン */
+
+.button-group {
+
+display: flex;
+
+flex-wrap: wrap;
+
+gap: 8px;
+
+margin-top: 16px;
+
+}
+
+
+
+.button {
+
+flex: 1 1 auto;
+
+padding: 10px 24px;
+
+border-radius: 20px;
+
+border: none;
+
+cursor: pointer;
+
+font-size: 14px;
+
+font-weight: 500;
+
+background-color: var(--md-sys-color-primary);
+
+color: var(--md-sys-color-on-primary);
+
+transition: background-color 0.2s;
+
+}
+
+
+
+/* ナビゲーションバー */
+
+.bottom-nav {
+
+position: fixed;
+
+bottom: 0;
+
+left: 0;
+
+right: 0;
+
+display: flex;
+
+justify-content: space-around;
+
+align-items: center;
+
+height: 64px;
+
+background-color: var(--md-sys-color-surface);
+
+box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+z-index: 100;
+
+}
+
+
+
+.nav-item {
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+flex: 1;
+
+cursor: pointer;
+
+color: var(--md-sys-color-on-surface-variant);
+
+padding: 8px;
+
+border-radius: 16px;
+
+transition: background-color 0.2s, color 0.2s;
+
+}
+
+
+
+.nav-item.active {
+
+background-color: var(--md-sys-color-primary-container);
+
+color: var(--md-sys-color-on-primary-container);
+
+}
+
+
+
+.nav-item .material-symbols-outlined {
+
+font-size: 24px;
+
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+
+}
+
+.nav-item.active .material-symbols-outlined {
+
+font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+
+}
+
+
+
+.nav-item span {
+
+font-size: 12px;
+
+margin-top: 4px;
+
+}
+
+/* 設定タブ内の要素 */
+
+.setting-section {
+
+background-color: var(--md-sys-color-surface-variant);
+
+border-radius: 12px;
+
+padding: 16px;
+
+margin-bottom: 16px;
+
+}
+
+.setting-section h3 {
+
+margin-top: 0;
+
+margin-bottom: 16px;
+
+font-size: 16px;
+
+color: var(--md-sys-color-on-surface-variant);
+
+}
+
+.setting-item {
+
+display: flex;
+
+justify-content: space-between;
+
+align-items: center;
+
+}
+
+
+
+.color-options {
+
+display: flex;
+
+gap: 8px;
+
+margin-top: 8px;
+
+}
+
+.color-option {
+
+width: 40px;
+
+height: 40px;
+
+border-radius: 50%;
+
+cursor: pointer;
+
+border: 2px solid transparent;
+
+transition: border-color 0.2s, transform 0.2s;
+
+}
+
+.color-option.active {
+
+border-color: var(--md-sys-color-primary);
+
+transform: scale(1.1);
+
+}
+
+
+
+/* スイッチ */
+
+.switch {
+
+position: relative;
+
+display: inline-block;
+
+width: 52px;
+
+height: 32px;
+
+}
+
+
+
+.switch input {
+
+opacity: 0;
+
+width: 0;
+
+height: 0;
+
+}
+
+
+
+.slider {
+
+position: absolute;
+
+cursor: pointer;
+
+top: 0;
+
+left: 0;
+
+right: 0;
+
+bottom: 0;
+
+background-color: var(--md-sys-color-surface-variant);
+
+transition: .4s;
+
+border-radius: 34px;
+
+border: 1px solid var(--md-sys-color-outline);
+
+}
+
+
+
+.slider:before {
+
+position: absolute;
+
+content: "";
+
+height: 24px;
+
+width: 24px;
+
+left: 4px;
+
+bottom: 4px;
+
+background-color: var(--md-sys-color-on-surface-variant);
+
+transition: .4s;
+
+border-radius: 50%;
+
+}
+
+
+
+input:checked + .slider {
+
+background-color: var(--md-sys-color-primary);
+
+border-color: var(--md-sys-color-primary);
+
+}
+
+
+
+input:checked + .slider:before {
+
+transform: translateX(18px);
+
+background-color: var(--md-sys-color-on-primary);
+
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="container">
+
+<div id="home-content" class="content active">
+
+<h2>ホーム</h2>
+
+<p>ここにホームコンテンツが表示されます。</p>
+
+<div class="button-group">
+
+<button class="button">ボタン1</button>
+
+<button class="button">ボタン2</button>
+
+</div>
+
+</div>
+
+
+
+<div id="settings-content" class="content">
+
+<h2>設定</h2>
+
+<div class="setting-section">
+
+<div class="setting-item">
+
+<span>ダークモード</span>
+
+<label class="switch">
+
+<input type="checkbox" id="darkModeToggle">
+
+<span class="slider"></span>
+
+</label>
+
+</div>
+
+</div>
+
+<div class="setting-section">
+
+<h3>カラーテーマ</h3>
+
+<div class="color-options">
+
+<div class="color-option active" id="theme-blue" style="background-color: #0061a4;" data-theme="blue"></div>
+
+<div class="color-option" id="theme-teal" style="background-color: #006a60;" data-theme="teal"></div>
+
+<div class="color-option" id="theme-purple" style="background-color: #7b4f9f;" data-theme="purple"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="bottom-nav">
+
+<div class="nav-item active" id="home-tab">
+
+<span class="material-symbols-outlined">home</span>
+
+<span>ホーム</span>
+
+</div>
+
+<div class="nav-item" id="settings-tab">
+
+<span class="material-symbols-outlined">settings</span>
+
+<span>設定</span>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+const body = document.body;
+
+const homeTab = document.getElementById('home-tab');
+
+const settingsTab = document.getElementById('settings-tab');
+
+const homeContent = document.getElementById('home-content');
+
+const settingsContent = document.getElementById('settings-content');
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+const colorOptions = document.querySelectorAll('.color-option');
+
+// タブ切り替え
+
+function setActiveTab(activeTabId) {
+
+document.querySelectorAll('.nav-item').forEach(tab => tab.classList.remove('active'));
+
+document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+
+
+
+document.getElementById(activeTabId).classList.add('active');
+
+document.getElementById(activeTabId.replace('-tab', '-content')).classList.add('active');
+
+}
+
+
+
+homeTab.addEventListener('click', () => setActiveTab('home-tab'));
+
+settingsTab.addEventListener('click', () => setActiveTab('settings-tab'));
+
+
+
+// ダークモード切り替え
+
+darkModeToggle.addEventListener('change', (event) => {
+
+if (event.target.checked) {
+
+body.classList.remove('light-mode');
+
+body.classList.add('dark-mode');
+
+} else {
+
+body.classList.remove('dark-mode');
+
+body.classList.add('light-mode');
+
+}
+
+});
+
+
+
+// カラーテーマ切り替え
+
+colorOptions.forEach(option => {
+
+option.addEventListener('click', () => {
+
+colorOptions.forEach(opt => opt.classList.remove('active'));
+
+option.classList.add('active');
+
+document.documentElement.classList.remove('theme-teal', 'theme-purple');
+
+const theme = option.dataset.theme;
+
+if (theme !== 'blue') {
+
+document.documentElement.classList.add(`theme-${theme}`);
+
+}
+
+});
+
+});
+
+});
+
+</script>
+
+</body>
+
+</html>
