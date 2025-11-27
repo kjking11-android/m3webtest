@@ -1,1893 +1,1282 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GemAI for OLD devices</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<style>
-/* * Base Material You Styles (Preserved & Expanded) 
- */
-:root {
-    /* Blue Theme (Default) */
-    --md-sys-color-primary-light: #0061a4;
-    --md-sys-color-on-primary-light: #ffffff;
-    --md-sys-color-primary-container-light: #d0e4ff;
-    --md-sys-color-on-primary-container-light: #001d36;
-    --md-sys-color-background-light: #fdfcff;
-    --md-sys-color-on-background-light: #1a1c1e;
-    --md-sys-color-surface-light: #fdfcff;
-    --md-sys-color-on-surface-light: #1a1c1e;
-    --md-sys-color-surface-variant-light: #dfe2eb;
-    --md-sys-color-on-surface-variant-light: #43474e;
-    --md-sys-color-outline-light: #73777f;
-    --md-sys-color-error-light: #ba1a1a;
-    --md-sys-color-on-error-light: #ffffff;
-
-    --md-sys-color-primary-dark: #9fcbff;
-    --md-sys-color-on-primary-dark: #003258;
-    --md-sys-color-primary-container-dark: #00497d;
-    --md-sys-color-on-primary-container-dark: #d0e4ff;
-    --md-sys-color-background-dark: #1a1c1e;
-    --md-sys-color-on-background-dark: #e3e2e6;
-    --md-sys-color-surface-dark: #1a1c1e;
-    --md-sys-color-on-surface-dark: #e3e2e6;
-    --md-sys-color-surface-variant-dark: #43474e;
-    --md-sys-color-on-surface-variant-dark: #c3c6cf;
-    --md-sys-color-outline-dark: #8d9199;
-    --md-sys-color-error-dark: #ffb4ab;
-    --md-sys-color-on-error-dark: #690005;
-}
-
-/* Teal Theme */
-.theme-teal {
-    --md-sys-color-primary-light: #006a60;
-    --md-sys-color-on-primary-light: #ffffff;
-    --md-sys-color-primary-container-light: #6ff7e4;
-    --md-sys-color-on-primary-container-light: #00201d;
-    --md-sys-color-primary-dark: #4fdcc8;
-    --md-sys-color-on-primary-dark: #003732;
-    --md-sys-color-primary-container-dark: #005049;
-    --md-sys-color-on-primary-container-dark: #6ff7e4;
-}
-
-/* Purple Theme */
-.theme-purple {
-    --md-sys-color-primary-light: #7b4f9f;
-    --md-sys-color-on-primary-light: #ffffff;
-    --md-sys-color-primary-container-light: #f0dbff;
-    --md-sys-color-on-primary-container-light: #2d0050;
-    --md-sys-color-primary-dark: #f0dbff;
-    --md-sys-color-on-primary-dark: #471e6d;
-    --md-sys-color-primary-container-dark: #613685;
-    --md-sys-color-on-primary-container-dark: #f0dbff;
-}
-
-/* Variable Mapping */
-:root, .light-mode {
-    --md-sys-color-primary: var(--md-sys-color-primary-light);
-    --md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
-    --md-sys-color-primary-container: var(--md-sys-color-primary-container-light);
-    --md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-light);
-    --md-sys-color-background: var(--md-sys-color-background-light);
-    --md-sys-color-on-background: var(--md-sys-color-on-background-light);
-    --md-sys-color-surface: var(--md-sys-color-surface-light);
-    --md-sys-color-on-surface: var(--md-sys-color-on-surface-light);
-    --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-light);
-    --md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-light);
-    --md-sys-color-outline: var(--md-sys-color-outline-light);
-    --md-sys-color-error: var(--md-sys-color-error-light);
-    --md-sys-color-on-error: var(--md-sys-color-on-error-light);
-}
-
-.dark-mode {
-    --md-sys-color-primary: var(--md-sys-color-primary-dark);
-    --md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
-    --md-sys-color-primary-container: var(--md-sys-color-primary-container-dark);
-    --md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-dark);
-    --md-sys-color-background: var(--md-sys-color-background-dark);
-    --md-sys-color-on-background: var(--md-sys-color-on-background-dark);
-    --md-sys-color-surface: var(--md-sys-color-surface-dark);
-    --md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
-    --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-dark);
-    --md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-dark);
-    --md-sys-color-outline: var(--md-sys-color-outline-dark);
-    --md-sys-color-error: var(--md-sys-color-error-dark);
-    --md-sys-color-on-error: var(--md-sys-color-on-error-dark);
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding-bottom: 80px;
-    background-color: var(--md-sys-color-background);
-    color: var(--md-sys-color-on-background);
-    transition: background-color 0.3s, color 0.3s;
-    min-height: 100vh;
-    overscroll-behavior-y: none;
-}
-
-.container {
-    padding: 16px;
-    max-width: 800px;
-    margin: 0 auto;
-    height: calc(100vh - 80px);
-    display: flex;
-    flex-direction: column;
-}
-
-.content { display: none; height: 100%; overflow-y: auto; }
-.content.active { display: block; }
-
-/* --- Components --- */
-
-/* Navigation */
-.bottom-nav {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 72px;
-    background-color: var(--md-sys-color-surface);
-    border-top: 1px solid var(--md-sys-color-outline);
-    z-index: 100;
-}
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    cursor: pointer;
-    color: var(--md-sys-color-on-surface-variant);
-    padding: 8px;
-    border-radius: 16px;
-    transition: 0.2s;
-}
-.nav-item.active {
-    color: var(--md-sys-color-on-surface);
-}
-.nav-item.active .icon-container {
-    background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-}
-.icon-container {
-    padding: 4px 20px;
-    border-radius: 16px;
-    margin-bottom: 4px;
-    transition: 0.2s;
-}
-.nav-item span:last-child { font-size: 11px; font-weight: 500; }
-
-/* Typography & Layout */
-h2 { margin: 0 0 16px 0; font-size: 22px; color: var(--md-sys-color-on-surface); }
-
-/* Input Fields */
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-.text-field {
-    background-color: var(--md-sys-color-surface-variant);
-    border: none;
-    border-radius: 8px; /* M3 small round */
-    padding: 12px 16px;
-    font-size: 16px;
-    color: var(--md-sys-color-on-surface-variant);
-    outline: none;
-    border-bottom: 2px solid transparent;
-    transition: 0.2s;
-}
-.text-field:focus {
-    border-bottom-color: var(--md-sys-color-primary);
-}
-textarea.text-field {
-    resize: vertical;
-    min-height: 60px;
-    font-family: inherit;
-}
-
-/* Buttons */
-.btn {
-    padding: 10px 24px;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: 0.2s;
-}
-.btn-primary {
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-}
-.btn-tonal {
-    background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-}
-.btn-danger {
-    background-color: var(--md-sys-color-error);
-    color: var(--md-sys-color-on-error);
-}
-.btn-icon {
-    width: 40px; height: 40px; padding: 0;
-    background: transparent;
-    color: var(--md-sys-color-on-surface-variant);
-}
-
-/* Lists (History & Gems) */
-.list-item {
-    background-color: var(--md-sys-color-surface-variant);
-    padding: 16px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-.list-item:active { transform: scale(0.98); }
-.list-content { flex: 1; overflow: hidden; }
-.list-title { font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.list-subtitle { font-size: 12px; opacity: 0.7; display: flex; gap: 8px; align-items: center; }
-.gem-badge {
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: bold;
-}
-.list-actions { display: flex; gap: 4px; }
-
-/* Chat Interface */
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-}
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.message {
-    max-width: 80%;
-    padding: 12px 16px;
-    border-radius: 16px;
-    line-height: 1.5;
-    font-size: 15px;
-    position: relative;
-    word-wrap: break-word;
-}
-.message.user {
-    align-self: flex-end;
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    border-bottom-right-radius: 4px;
-}
-.message.ai {
-    align-self: flex-start;
-    background-color: var(--md-sys-color-surface-variant);
-    color: var(--md-sys-color-on-surface-variant);
-    border-bottom-left-radius: 4px;
-}
-.message-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 4px;
-    opacity: 0.6;
-}
-.message-actions span { font-size: 16px; cursor: pointer; }
-.chat-input-area {
-    display: flex;
-    gap: 8px;
-    padding: 12px;
-    background-color: var(--md-sys-color-surface);
-    border-top: 1px solid var(--md-sys-color-outline);
-}
-.chat-input-area .text-field { flex: 1; border-radius: 24px; }
-
-/* Home Tab */
-.home-welcome {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-}
-.brand-text {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--md-sys-color-primary);
-    margin-bottom: 8px;
-}
-.brand-sub { opacity: 0.7; margin-bottom: 32px; }
-.home-input-wrapper {
-    width: 100%;
-    position: relative;
-}
-.home-input {
-    width: 100%;
-    padding: 16px 48px 16px 20px;
-    border-radius: 28px;
-    border: 1px solid var(--md-sys-color-outline);
-    background: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
-    font-size: 16px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-.home-send-btn {
-    position: absolute;
-    right: 8px; top: 8px;
-    background: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    border-radius: 50%;
-    width: 40px; height: 40px;
-    border: none;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-}
-
-/* Floating Action Button (FAB) */
-.fab {
-    position: fixed;
-    bottom: 90px;
-    right: 16px;
-    width: 56px; height: 56px;
-    border-radius: 16px;
-    background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    cursor: pointer;
-    z-index: 90;
-    transition: 0.2s;
-}
-.fab:active { transform: scale(0.95); }
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed; z-index: 200;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    align-items: center; justify-content: center;
-}
-.modal.open { display: flex; }
-.modal-content {
-    background-color: var(--md-sys-color-surface);
-    padding: 24px;
-    border-radius: 28px;
-    width: 85%; max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.modal-actions {
-    display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px;
-}
-
-/* Settings */
-.setting-section {
-    background-color: var(--md-sys-color-surface-variant);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-}
-.setting-section h3 {
-    margin-top: 0; margin-bottom: 12px;
-    font-size: 14px;
-    color: var(--md-sys-color-on-surface-variant);
-    text-transform: uppercase; letter-spacing: 1px;
-}
-.setting-item {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px;
-}
-.setting-item:last-child { margin-bottom: 0; }
-.switch { position: relative; display: inline-block; width: 52px; height: 32px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider {
-    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-    background-color: var(--md-sys-color-outline);
-    transition: .4s; border-radius: 34px;
-}
-.slider:before {
-    position: absolute; content: ""; height: 24px; width: 24px; left: 4px; bottom: 4px;
-    background-color: #fff; transition: .4s; border-radius: 50%;
-}
-input:checked + .slider { background-color: var(--md-sys-color-primary); }
-input:checked + .slider:before { transform: translateX(20px); background-color: var(--md-sys-color-on-primary); }
-.color-options { display: flex; gap: 8px; }
-.color-option {
-    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-    border: 2px solid transparent;
-}
-.color-option.active { border-color: var(--md-sys-color-on-surface); }
-.markdown-body code { background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 4px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GemAI - Gemini MaterialUI 2 Web App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons (Material-style icons) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Interフォントの設定 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5; /* Light background for M2 feel */
+        }
+        /* Material 2 のスタイルをエミュレート */
+        .m2-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+        .m2-card:hover {
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        }
+        .m2-input {
+            border: 1px solid #bdbdbd;
+            border-radius: 4px;
+            padding: 10px;
+            transition: border-color 0.3s;
+        }
+        .m2-input:focus {
+            outline: none;
+            border-color: #6200EE; /* Primary color */
+            box-shadow: 0 0 0 1px #6200EE;
+        }
+        .m2-button {
+            background-color: #6200EE;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 500;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .m2-button:hover {
+            background-color: #3700B3;
+            box-shadow: 0 4px 5px rgba(0,0,0,0.3);
+        }
+        .m2-tab-active {
+            color: #6200EE;
+            border-bottom: 3px solid #6200EE;
+        }
+        .message-user {
+            background-color: #E3F2FD; /* Light blue */
+            border-bottom-right-radius: 0;
+        }
+        .message-ai {
+            background-color: #F8F8F8; /* Light gray */
+            border-bottom-left-radius: 0;
+        }
+        .message-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
-<div class="container">
-    <div id="home-content" class="content active">
-        <div class="home-welcome">
-            <span class="material-symbols-outlined" style="font-size: 64px; color: var(--md-sys-color-primary);">smart_toy</span>
-            <div class="brand-text">GemAI</div>
-            <div class="brand-sub">For OLD Devices</div>
-            <div class="home-input-wrapper">
-                <input type="text" class="home-input" id="homeInput" placeholder="何か聞いてみてください...">
-                <button class="home-send-btn" id="homeSendBtn">
-                    <span class="material-symbols-outlined">send</span>
+    <!-- メインレイアウト -->
+    <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full p-4 sm:p-6">
+        <!-- ヘッダーとナビゲーション -->
+        <header class="mb-4 m2-card p-4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">GemAI</h1>
+            <nav id="nav-tabs" class="flex border-b border-gray-200">
+                <button data-tab="home" class="tab-button flex-1 py-3 px-4 text-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors m2-tab-active">
+                    <i data-lucide="home" class="inline-block w-4 h-4 mr-2"></i>ホーム
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="history-content" class="content">
-        <h2>会話履歴</h2>
-        <div id="historyList"></div>
-    </div>
-
-    <div id="chat-content" class="content">
-        <div class="chat-container">
-            <div style="padding: 8px; border-bottom: 1px solid var(--md-sys-color-outline); display: flex; align-items: center; justify-content: space-between;">
-                <span id="currentChatTitle" style="font-weight: bold;">新しい会話</span>
-                <span class="material-symbols-outlined" style="cursor: pointer;" id="chatMenuBtn">more_vert</span>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div style="text-align:center; opacity: 0.5; margin-top: 20px;">会話を開始してください</div>
-            </div>
-            <div class="chat-input-area">
-                <textarea class="text-field" id="chatInput" placeholder="メッセージを入力..."></textarea>
-                <button class="btn-icon" id="chatSendBtn" style="color: var(--md-sys-color-primary);">
-                    <span class="material-symbols-outlined">send</span>
+                <button data-tab="chat" class="tab-button flex-1 py-3 px-4 text-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                    <i data-lucide="message-square" class="inline-block w-4 h-4 mr-2"></i>会話
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="gems-content" class="content">
-        <h2>My Gems</h2>
-        <p style="opacity: 0.7; font-size: 14px;">カスタム人格や特定のタスク用のAIを作成します。</p>
-        <div id="gemsList"></div>
-        <div class="fab" id="createGemFab">
-            <span class="material-symbols-outlined">add</span>
-        </div>
-    </div>
-
-    <div id="settings-content" class="content">
-        <h2>設定</h2>
-        
-        <div class="setting-section">
-            <h3>API設定</h3>
-            <div class="input-group">
-                <label style="font-size: 12px;">Gemini API Key</label>
-                <input type="password" class="text-field" id="apiKeyInput" placeholder="AIzaSy...">
-            </div>
-            <button class="btn btn-tonal" id="saveApiKeyBtn">キーを保存</button>
-            <p style="font-size: 12px; opacity: 0.6; margin-top: 8px;">キーはブラウザ内にのみ保存されます。</p>
-        </div>
-
-        <div class="setting-section">
-            <h3>外観</h3>
-            <div class="setting-item">
-                <span>ダークモード</span>
-                <label class="switch">
-                    <input type="checkbox" id="darkModeToggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="color-options" style="margin-top: 12px;">
-                <div class="color-option active" style="background-color: #0061a4;" data-theme="blue"></div>
-                <div class="color-option" style="background-color: #006a60;" data-theme="teal"></div>
-                <div class="color-option" style="background-color: #7b4f9f;" data-theme="purple"></div>
-            </div>
-        </div>
-
-        <div class="setting-section">
-            <h3>データ管理</h3>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-tonal" id="exportDataBtn">
-                    <span class="material-symbols-outlined">download</span> エクスポート
+                <button data-tab="history" class="tab-button flex-1 py-3 px-4 text-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                    <i data-lucide="history" class="inline-block w-4 h-4 mr-2"></i>履歴 (<span id="history-count">0</span>)
                 </button>
-                <button class="btn btn-tonal" id="importDataBtn">
-                    <span class="material-symbols-outlined">upload</span> インポート
+                <button data-tab="gems" class="tab-button flex-1 py-3 px-4 text-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                    <i data-lucide="gem" class="inline-block w-4 h-4 mr-2"></i>Gem (<span id="gems-count">0</span>)
                 </button>
-                <input type="file" id="importFileInput" style="display:none" accept=".json">
-            </div>
-        </div>
-    </div>
-</div>
+                <button data-tab="settings" class="tab-button flex-1 py-3 px-4 text-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                    <i data-lucide="settings" class="inline-block w-4 h-4 mr-2"></i>設定
+                </button>
+            </nav>
+        </header>
 
-<div class="bottom-nav">
-    <div class="nav-item active" data-target="home">
-        <div class="icon-container"><span class="material-symbols-outlined">home</span></div>
-        <span>ホーム</span>
+        <!-- コンテンツエリア -->
+        <main id="app-content" class="flex-grow flex flex-col"></main>
     </div>
-    <div class="nav-item" data-target="history">
-        <div class="icon-container"><span class="material-symbols-outlined">history</span></div>
-        <span>履歴</span>
-    </div>
-    <div class="nav-item" data-target="chat">
-        <div class="icon-container"><span class="material-symbols-outlined">chat</span></div>
-        <span>会話</span>
-    </div>
-    <div class="nav-item" data-target="gems">
-        <div class="icon-container"><span class="material-symbols-outlined">diamond</span></div>
-        <span>Gems</span>
-    </div>
-    <div class="nav-item" data-target="settings">
-        <div class="icon-container"><span class="material-symbols-outlined">settings</span></div>
-        <span>設定</span>
-    </div>
-</div>
 
-<div class="modal" id="gemModal">
-    <div class="modal-content">
-        <h3 id="gemModalTitle">Gemを作成</h3>
-        <div class="input-group">
-            <input type="text" class="text-field" id="gemNameInput" placeholder="Gem名 (例: 英語の先生)">
-            <textarea class="text-field" id="gemInstructInput" placeholder="システム指示 (例: あなたは親切な英語教師です...)" style="height: 120px;"></textarea>
-        </div>
-        <div class="modal-actions">
-            <button class="btn" id="closeGemModalBtn">キャンセル</button>
-            <button class="btn btn-primary" id="saveGemBtn">保存</button>
-        </div>
+    <!-- モーダルコンテナ -->
+    <div id="modal-container" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center">
+        <!-- モーダルコンテンツはJSで動的に挿入されます -->
     </div>
-</div>
 
-<script>
-/**
- * DB & State Management
- */
-const DB_NAME = 'GemAI_DB';
-const DB_VERSION = 1;
-let db;
-let currentChatId = null;
-let currentGem = null;
-let apiKey = localStorage.getItem('gemini_api_key') || '';
+    <!-- JavaScriptコード -->
+    <script>
+        const DB_NAME = 'GemAIDB';
+        const DB_VERSION = 1;
+        const STORE_CHATS = 'chats';
+        const STORE_GEMS = 'gems';
+        const STORE_SETTINGS = 'settings';
 
-// Initialize DB
-const initDB = () => {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-        request.onupgradeneeded = (e) => {
-            db = e.target.result;
-            if (!db.objectStoreNames.contains('chats')) {
-                db.createObjectStore('chats', { keyPath: 'id' });
-            }
-            if (!db.objectStoreNames.contains('gems')) {
-                db.createObjectStore('gems', { keyPath: 'id' });
-            }
+        // --- IndexedDB Helper Functions ---
+        async function openDB() {
+            return new Promise((resolve, reject) => {
+                if (window.indexedDB) {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+                    
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        if (!db.objectStoreNames.contains(STORE_CHATS)) {
+                            db.createObjectStore(STORE_CHATS, { keyPath: 'id' });
+                        }
+                        if (!db.objectStoreNames.contains(STORE_GEMS)) {
+                            db.createObjectStore(STORE_GEMS, { keyPath: 'id' });
+                        }
+                        if (!db.objectStoreNames.contains(STORE_SETTINGS)) {
+                            db.createObjectStore(STORE_SETTINGS, { keyPath: 'key' });
+                        }
+                    };
+
+                    request.onsuccess = (event) => {
+                        resolve(event.target.result);
+                    };
+
+                    request.onerror = (event) => {
+                        console.error("IndexedDB error:", event.target.errorCode);
+                        reject("IndexedDBのオープンに失敗しました。");
+                    };
+                } else {
+                    reject("お使いのブラウザはIndexedDBをサポートしていません。");
+                }
+            });
+        }
+
+        async function saveToDB(storeName, data) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.put(data);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = (event) => reject(event.target.error);
+            });
+        }
+
+        async function getFromDB(storeName, key) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const request = store.get(key);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = (event) => reject(event.target.error);
+            });
+        }
+
+        async function getAllFromDB(storeName) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const request = store.getAll();
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = (event) => reject(event.target.error);
+            });
+        }
+
+        async function deleteFromDB(storeName, key) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.delete(key);
+
+                request.onsuccess = () => resolve();
+                request.onerror = (event) => reject(event.target.error);
+            });
+        }
+
+        // --- Global State Management ---
+        const initialAppState = {
+            currentTab: 'home',
+            chats: [], // { id: string, name: string, isGemChat: boolean, gemId?: string, history: [{role: 'user'|'model', text: string}] }
+            gems: [],  // { id: string, name: string, content: string }
+            currentChatId: null,
+            apiKey: '',
+            isLoading: false,
+            message: null, // {type: 'success'|'error', text: string}
         };
-        request.onsuccess = (e) => {
-            db = e.target.result;
-            resolve(db);
-        };
-        request.onerror = (e) => reject(e);
-    });
-};
 
-// Helpers
-const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
-const getStore = (name, mode = 'readonly') => db.transaction(name, mode).objectStore(name);
-
-// API Call
-const callGemini = async (messages, systemInstruction = null) => {
-    if (!apiKey) throw new Error("APIキーが設定されていません");
-    
-    const contents = messages.map(m => ({
-        role: m.role === 'user' ? 'user' : 'model',
-        parts: [{ text: m.text }]
-    }));
-
-    let body = { contents };
-    if (systemInstruction) {
-        body.systemInstruction = { parts: [{ text: systemInstruction }] };
-    }
-
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
-
-    if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error?.message || 'API Error');
-    }
-
-    const data = await response.json();
-    return data.candidates[0].content.parts[0].text;
-};
-
-/**
- * UI Interaction Logic
- */
-document.addEventListener('DOMContentLoaded', async () => {
-    await initDB();
-    if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
-    renderHistory();
-    renderGems();
-
-    // Navigation
-    const tabs = document.querySelectorAll('.nav-item');
-    const contents = document.querySelectorAll('.content');
-
-    function switchTab(targetId) {
-        tabs.forEach(t => {
-            t.classList.toggle('active', t.dataset.target === targetId);
+        const appState = new Proxy(initialAppState, {
+            set(target, property, value) {
+                target[property] = value;
+                // 特定のプロパティの変更時にUIを更新
+                if (['currentTab', 'currentChatId', 'isLoading', 'message'].includes(property)) {
+                    renderApp();
+                }
+                if (['chats', 'gems', 'apiKey'].includes(property)) {
+                    renderApp(); // 全体再レンダリング
+                }
+                if (property === 'chats' || property === 'gems') {
+                    // カウントの更新
+                    document.getElementById('history-count').textContent = target.chats.length;
+                    document.getElementById('gems-count').textContent = target.gems.length;
+                }
+                return true;
+            }
         });
-        contents.forEach(c => {
-            c.classList.toggle('active', c.id === `${targetId}-content`);
-        });
+
+        // --- Utility Functions ---
+
+        function generateUniqueId() {
+            return 'chat-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9);
+        }
+
+        function showMessage(type, text) {
+            appState.message = { type, text };
+            setTimeout(() => appState.message = null, 3000);
+        }
+
+        // --- Gemini API Handler ---
+
+        const MODEL_NAME = 'gemini-2.5-flash-preview-09-2025';
+
+        async function callGeminiAPI(history, systemInstruction = null) {
+            if (!appState.apiKey) {
+                showMessage('error', '設定タブでAPIキーを入力してください。');
+                return null;
+            }
+
+            appState.isLoading = true;
+            let responseData = null;
+            const apiKey = appState.apiKey;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
+            const MAX_RETRIES = 5;
+
+            const contents = history.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.text }]
+            }));
+
+            let payload = {
+                contents: contents,
+            };
+
+            // systemInstructionがnullまたは空文字列の場合は含めない
+            if (systemInstruction && systemInstruction.trim() !== "") {
+                payload.systemInstruction = {
+                    parts: [{ text: systemInstruction }]
+                };
+            }
+            
+            for (let i = 0; i < MAX_RETRIES; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorBody = await response.json();
+                        // APIキーが無効である可能性を明確にユーザーに伝える
+                        const errorMessage = errorBody.error?.message || response.statusText;
+                        if (response.status === 400 && errorMessage.includes("API key not valid")) {
+                            // APIキーが無効な場合は、再試行せず即座にエラーをスロー
+                            throw new Error(`APIエラー: 400 - APIキーが無効です。設定を確認してください。`);
+                        }
+                        throw new Error(`APIエラー: ${response.status} - ${errorMessage}`);
+                    }
+
+                    responseData = await response.json();
+                    break; // 成功
+                } catch (error) {
+                    console.error(`APIコールエラー (試行 ${i + 1}/${MAX_RETRIES}):`, error);
+                    
+                    // APIキー無効エラーの場合は、すぐにループを抜ける
+                    if (error.message.includes("APIキーが無効です")) {
+                        showMessage('error', error.message);
+                        appState.isLoading = false;
+                        return null;
+                    }
+                    
+                    if (i === MAX_RETRIES - 1) {
+                        showMessage('error', `AIからの応答取得に失敗しました: ${error.message}`);
+                        return null;
+                    }
+                    // 指数バックオフ
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+
+            appState.isLoading = false;
+
+            const text = responseData?.candidates?.[0]?.content?.parts?.[0]?.text || '応答がありませんでした。';
+            return text;
+        }
         
-        if (targetId === 'history') renderHistory();
-        if (targetId === 'gems') renderGems();
-    }
+        // --- NEW Gemini LLM Feature Implementations ---
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => switchTab(tab.dataset.target));
-    });
+        /**
+         * 特定のテキストを要約し、モーダルで表示します。
+         */
+        async function summarizeText(text) {
+            if (!appState.apiKey) {
+                showMessage('error', '設定タブでAPIキーを入力してください。');
+                return;
+            }
 
-    // Settings
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    darkModeToggle.addEventListener('change', (e) => {
-        document.body.classList.toggle('dark-mode', e.target.checked);
-        document.body.classList.toggle('light-mode', !e.target.checked);
-    });
+            const prompt = `以下のテキストを、重要なポイントに絞って3〜4行で簡潔に要約してください。:\n\n---\n\n${text}`;
+            
+            // 一時的にローディング状態を設定 (APIコールが集中しないように)
+            appState.isLoading = true;
 
-    document.querySelectorAll('.color-option').forEach(opt => {
-        opt.addEventListener('click', () => {
-            document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
-            opt.classList.add('active');
-            document.documentElement.className = ''; // reset
-            if (darkModeToggle.checked) document.body.classList.add('dark-mode');
-            const theme = opt.dataset.theme;
-            if (theme !== 'blue') document.documentElement.classList.add(`theme-${theme}`);
-        });
-    });
+            const summary = await callSingleTurnAPI(prompt);
+            
+            appState.isLoading = false;
 
-    document.getElementById('saveApiKeyBtn').addEventListener('click', () => {
-        apiKey = document.getElementById('apiKeyInput').value.trim();
-        localStorage.setItem('gemini_api_key', apiKey);
-        alert('APIキーを保存しました');
-    });
+            if (summary) {
+                showModal(`
+                    <div class="m2-card p-6 w-full max-w-xl">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center"><i data-lucide="zap" class="w-5 h-5 mr-2 text-yellow-500"></i> ✨ 要約結果</h3>
+                        <p class="message-content text-gray-800">${summary.replace(/\n/g, '<br>')}</p>
+                        <div class="flex justify-end mt-4">
+                            <button onclick="closeModal()" class="m2-button bg-gray-500 hover:bg-gray-600">閉じる</button>
+                        </div>
+                    </div>
+                `);
+                lucide.createIcons();
+            } else {
+                // callSingleTurnAPI内でエラーメッセージは処理済み
+            }
+        }
+        
+        /**
+         * 現在の会話の履歴に基づき、次に聞くべき関連質問を3つ生成し、モーダルで表示します。
+         */
+        async function generateFollowUpQuestions(currentChatHistory) {
+            if (!appState.apiKey) {
+                showMessage('error', '設定タブでAPIキーを入力してください。');
+                return;
+            }
+            
+            // 最新のメッセージ履歴を渡す
+            const conversationSnippet = currentChatHistory.slice(-5).map(m => `${m.role === 'user' ? 'ユーザー' : 'AI'}: ${m.text}`).join('\n');
 
-    // Export/Import
-    document.getElementById('exportDataBtn').addEventListener('click', async () => {
-        const chats = await getAllFromStore('chats');
-        const gems = await getAllFromStore('gems');
-        const data = { chats, gems, date: new Date().toISOString() };
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `gemai-backup-${Date.now()}.json`;
-        a.click();
-    });
+            const systemInstruction = `あなたは会話の専門家です。直前の会話の文脈を考慮し、ユーザーが次に聞く可能性が最も高い関連質問を3つ生成してください。応答は、質問のリストをMarkdown形式で提供してください。例: "- 質問1\n- 質問2\n- 質問3"`;
+            const prompt = `以下の会話の続きとして、ユーザーに提案する質問を3つ生成してください。\n\n---\n${conversationSnippet}`;
 
-    document.getElementById('importDataBtn').addEventListener('click', () => {
-        document.getElementById('importFileInput').click();
-    });
+            // 一時的にローディング状態を設定
+            appState.isLoading = true;
+            
+            const questionsRaw = await callSingleTurnAPI(prompt, systemInstruction);
+            
+            appState.isLoading = false;
 
-    document.getElementById('importFileInput').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = async (ev) => {
+            if (questionsRaw) {
+                const questions = questionsRaw.split('\n')
+                                            .map(line => line.replace(/^-?\s*/, '').trim())
+                                            .filter(line => line.length > 0);
+                
+                showModal(`
+                    <div class="m2-card p-6 w-full max-w-xl">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center"><i data-lucide="sparkles" class="w-5 h-5 mr-2 text-pink-500"></i> ✨ 次の一手: 関連質問</h3>
+                        <p class="text-gray-700 mb-4">会話を深めるために、以下の質問を試してみませんか？</p>
+                        <ul class="list-none space-y-2">
+                            ${questions.map(q => `
+                                <li class="p-3 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer text-gray-800 transition-colors" onclick="selectFollowUpQuestion('${q.replace(/'/g, "\\'")}')">
+                                    <i data-lucide="chevrons-right" class="w-4 h-4 inline-block mr-2 text-blue-600"></i> ${q}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="flex justify-end mt-4">
+                            <button onclick="closeModal()" class="m2-button bg-gray-500 hover:bg-gray-600">閉じる</button>
+                        </div>
+                    </div>
+                `);
+                lucide.createIcons();
+            } else {
+                // callSingleTurnAPI内でエラーメッセージは処理済み
+            }
+        }
+
+        /**
+         * 単一のプロンプトでAPIを呼び出すヘルパー関数（会話履歴なし）
+         */
+        async function callSingleTurnAPI(prompt, systemInstruction = null) {
+            if (!appState.apiKey) {
+                showMessage('error', '設定タブでAPIキーを入力してください。');
+                return null;
+            }
+
+            let responseData = null;
+            const apiKey = appState.apiKey;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
+            const MAX_RETRIES = 5;
+
+            let payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+            };
+
+            // systemInstructionがnullまたは空文字列の場合は含めない
+            if (systemInstruction && systemInstruction.trim() !== "") {
+                payload.systemInstruction = {
+                    parts: [{ text: systemInstruction }]
+                };
+            }
+            
+            for (let i = 0; i < MAX_RETRIES; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorBody = await response.json();
+                         // APIキーが無効である可能性を明確にユーザーに伝える
+                        const errorMessage = errorBody.error?.message || response.statusText;
+                        if (response.status === 400 && errorMessage.includes("API key not valid")) {
+                            // APIキーが無効な場合は、再試行せず即座にエラーをスロー
+                            throw new Error(`APIエラー: 400 - APIキーが無効です。設定を確認してください。`);
+                        }
+                        throw new Error(`APIエラー: ${response.status} - ${errorMessage}`);
+                    }
+
+                    responseData = await response.json();
+                    break;
+                } catch (error) {
+                    console.error(`APIコールエラー (試行 ${i + 1}/${MAX_RETRIES}):`, error);
+
+                    // APIキー無効エラーの場合は、すぐにループを抜ける
+                    if (error.message.includes("APIキーが無効です")) {
+                        showMessage('error', error.message);
+                        return null;
+                    }
+                    
+                    if (i === MAX_RETRIES - 1) {
+                        showMessage('error', `AIからの応答取得に失敗しました: ${error.message}`);
+                        return null;
+                    }
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+
+            return responseData?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+        }
+
+        // --- IndexedDB Initialization and Data Loading ---
+
+        async function loadInitialData() {
             try {
-                const data = JSON.parse(ev.target.result);
-                const tx = db.transaction(['chats', 'gems'], 'readwrite');
-                if (data.chats) data.chats.forEach(c => tx.objectStore('chats').put(c));
-                if (data.gems) data.gems.forEach(g => tx.objectStore('gems').put(g));
-                alert('インポート完了');
-                renderHistory();
-                renderGems();
-            } catch(err) {
-                alert('インポート失敗: ' + err.message);
+                const [chats, gems, settings] = await Promise.all([
+                    getAllFromDB(STORE_CHATS),
+                    getAllFromDB(STORE_GEMS),
+                    getFromDB(STORE_SETTINGS, 'apiKey')
+                ]);
+                appState.chats = chats.sort((a, b) => b.timestamp - a.timestamp); // 最新順
+                appState.gems = gems;
+                appState.apiKey = settings?.value || '';
+
+                // 初回ロード時にアクティブなチャットIDがあれば、それを設定
+                if (appState.chats.length > 0 && !appState.currentChatId) {
+                    appState.currentChatId = appState.chats[0].id;
+                }
+                
+                // 初回レンダリング
+                renderApp();
+            } catch (error) {
+                console.error("データロードエラー:", error);
+                showMessage('error', 'データのロード中にエラーが発生しました。');
+                renderApp(); // エラーでもUIを初期化
             }
-        };
-        reader.readAsText(file);
-    });
-
-    // Chat Logic
-    async function createChat(initialText, gemId = null) {
-        const id = generateId();
-        let title = initialText.slice(0, 20);
-        let gemData = null;
-
-        if (gemId) {
-            gemData = await getFromStore('gems', gemId);
-            title = `${gemData.name}との会話`;
         }
 
-        const newChat = {
-            id,
-            title,
-            messages: [],
-            createdAt: Date.now(),
-            gemId: gemId,
-            gemName: gemData ? gemData.name : null,
-            systemInstruction: gemData ? gemData.instructions : null
-        };
+        // --- View Rendering Functions ---
 
-        await putToStore('chats', newChat);
-        currentChatId = id;
-        loadChat(id);
-        switchTab('chat');
-        
-        if (initialText) {
-            await sendMessage(initialText);
-        }
-    }
-
-    async function loadChat(id) {
-        currentChatId = id;
-        const chat = await getFromStore('chats', id);
-        if (!chat) return;
-
-        document.getElementById('currentChatTitle').textContent = chat.title;
-        const container = document.getElementById('chatMessages');
-        container.innerHTML = '';
-
-        chat.messages.forEach(msg => renderMessage(msg));
-        container.scrollTop = container.scrollHeight;
-    }
-
-    function renderMessage(msg) {
-        const div = document.createElement('div');
-        div.className = `message ${msg.role}`;
-        div.textContent = msg.text;
-        
-        const actions = document.createElement('div');
-        actions.className = 'message-actions';
-        
-        const copyBtn = document.createElement('span');
-        copyBtn.className = 'material-symbols-outlined';
-        copyBtn.textContent = 'content_copy';
-        copyBtn.onclick = () => navigator.clipboard.writeText(msg.text);
-        
-        const shareBtn = document.createElement('span');
-        shareBtn.className = 'material-symbols-outlined';
-        shareBtn.textContent = 'share';
-        shareBtn.onclick = () => {
-            if (navigator.share) navigator.share({ text: msg.text });
-            else alert('共有機能はこのブラウザでサポートされていません');
-        };
-
-        actions.appendChild(copyBtn);
-        if (msg.role === 'ai') actions.appendChild(shareBtn);
-        
-        div.appendChild(actions);
-        document.getElementById('chatMessages').appendChild(div);
-    }
-
-    async function sendMessage(text) {
-        if (!text.trim() || !currentChatId) return;
-        
-        const chatInput = document.getElementById('chatInput');
-        chatInput.value = '';
-        
-        // User Message
-        const userMsg = { role: 'user', text: text, timestamp: Date.now() };
-        renderMessage(userMsg);
-        
-        // Save User Message
-        const chat = await getFromStore('chats', currentChatId);
-        chat.messages.push(userMsg);
-        await putToStore('chats', chat);
-
-        // API Call
-        try {
-            const responseText = await callGemini(chat.messages, chat.systemInstruction);
+        function renderApp() {
+            const content = document.getElementById('app-content');
+            content.innerHTML = '';
             
-            // AI Message
-            const aiMsg = { role: 'ai', text: responseText, timestamp: Date.now() };
-            renderMessage(aiMsg);
+            // ナビゲーションタブの更新
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('m2-tab-active');
+                if (btn.dataset.tab === appState.currentTab) {
+                    btn.classList.add('m2-tab-active');
+                }
+            });
             
-            // Save AI Message
-            chat.messages.push(aiMsg);
-            await putToStore('chats', chat);
+            // コンテンツのレンダリング
+            switch (appState.currentTab) {
+                case 'home':
+                    renderHome(content);
+                    break;
+                case 'chat':
+                    renderChat(content);
+                    break;
+                case 'history':
+                    renderHistory(content);
+                    break;
+                case 'gems':
+                    renderGems(content);
+                    break;
+                case 'settings':
+                    renderSettings(content);
+                    break;
+            }
             
-            // Scroll
-            const container = document.getElementById('chatMessages');
-            container.scrollTop = container.scrollHeight;
+            // メッセージ表示の更新
+            const messageEl = document.getElementById('app-message');
+            if (appState.message) {
+                if (!messageEl) {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.id = 'app-message';
+                    msgDiv.className = 'fixed top-4 right-4 p-3 rounded-lg shadow-lg text-white z-50 transition-opacity duration-300';
+                    document.body.appendChild(msgDiv);
+                }
+                const msgDiv = document.getElementById('app-message');
+                msgDiv.textContent = appState.message.text;
+                msgDiv.className = `fixed top-4 right-4 p-3 rounded-lg shadow-lg text-white z-50 transition-opacity duration-300 ${appState.message.type === 'error' ? 'bg-red-500' : 'bg-green-500'}`;
+                msgDiv.style.opacity = 1;
+            } else if (messageEl) {
+                messageEl.style.opacity = 0;
+                setTimeout(() => messageEl.remove(), 300); // アニメーション後に削除
+            }
 
-        } catch (e) {
-            renderMessage({ role: 'ai', text: `エラー: ${e.message}` });
+            // アイコンの初期化
+            lucide.createIcons();
         }
-    }
 
-    // Home & Chat Inputs
-    document.getElementById('homeSendBtn').addEventListener('click', () => {
-        const text = document.getElementById('homeInput').value;
-        if(text) {
-            document.getElementById('homeInput').value = '';
-            createChat(text);
+        function handleTabChange(event) {
+            const newTab = event.currentTarget.dataset.tab;
+            appState.currentTab = newTab;
+
+            // 会話タブに切り替える際、もしアクティブなチャットがなければ履歴の最新を開く
+            if (newTab === 'chat' && !appState.currentChatId && appState.chats.length > 0) {
+                appState.currentChatId = appState.chats[0].id;
+            } else if (newTab === 'chat' && appState.chats.length === 0) {
+                // チャットがない場合はホームに戻す（または特別なメッセージを表示）
+                appState.currentTab = 'home';
+                // メッセージをあえて表示しない。ホーム画面で新しいチャットを促すため
+            }
         }
-    });
-    document.getElementById('homeInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') document.getElementById('homeSendBtn').click();
-    });
-
-    document.getElementById('chatSendBtn').addEventListener('click', () => {
-        sendMessage(document.getElementById('chatInput').value);
-    });
-
-    // Gem Logic
-    const gemModal = document.getElementById('gemModal');
-    let editingGemId = null;
-
-    document.getElementById('createGemFab').addEventListener('click', () => {
-        editingGemId = null;
-        document.getElementById('gemNameInput').value = '';
-        document.getElementById('gemInstructInput').value = '';
-        document.getElementById('gemModalTitle').textContent = 'Gemを作成';
-        gemModal.classList.add('open');
-    });
-
-    document.getElementById('closeGemModalBtn').addEventListener('click', () => {
-        gemModal.classList.remove('open');
-    });
-
-    document.getElementById('saveGemBtn').addEventListener('click', async () => {
-        const name = document.getElementById('gemNameInput').value;
-        const instructions = document.getElementById('gemInstructInput').value;
-        if (!name) return alert('Gem名を入力してください');
-
-        const gem = {
-            id: editingGemId || generateId(),
-            name,
-            instructions,
-            createdAt: Date.now()
-        };
-        await putToStore('gems', gem);
-        gemModal.classList.remove('open');
-        renderGems();
-    });
-
-    // Render Functions
-    async function renderHistory() {
-        const list = document.getElementById('historyList');
-        list.innerHTML = '';
-        const chats = await getAllFromStore('chats');
         
-        chats.sort((a, b) => b.createdAt - a.createdAt).forEach(chat => {
-            const el = document.createElement('div');
-            el.className = 'list-item';
-            el.innerHTML = `
-                <div class="list-content" onclick="loadChatAndSwitch('${chat.id}')">
-                    <div class="list-title">${chat.title}</div>
-                    <div class="list-subtitle">
-                        ${chat.gemName ? `<span class="gem-badge">${chat.gemName}</span>` : ''}
-                        ${new Date(chat.createdAt).toLocaleDateString()}
-                    </div>
-                </div>
-                <div class="list-actions">
-                    <button class="btn-icon" onclick="deleteChat('${chat.id}')">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+        // --- Tab Content Renderers ---
+
+        function renderHome(container) {
+            const isApiReady = !!appState.apiKey;
+
+            container.className = 'flex-grow flex flex-col justify-center items-center p-6';
+            container.innerHTML = `
+                <div class="w-full max-w-lg m2-card p-6 sm:p-8">
+                    <h2 class="text-2xl font-semibold mb-6 text-gray-800">新しい会話を始める</h2>
+                    ${!isApiReady ? `
+                        <div class="p-4 mb-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded-lg">
+                            <p class="font-bold">APIキーが必要です</p>
+                            <p class="text-sm">「設定」タブで有効なGemini APIキーを入力してください。</p>
+                        </div>
+                    ` : ''}
+                    <form id="home-chat-form" class="flex flex-col space-y-4">
+                        <textarea id="home-prompt" rows="4" placeholder="AIに話しかけてください..." 
+                            class="m2-input w-full resize-none" required></textarea>
+                        <button type="submit" class="m2-button w-full flex items-center justify-center" ${appState.isLoading || !isApiReady ? 'disabled' : ''}>
+                            ${appState.isLoading ? `
+                                <i data-lucide="loader-circle" class="animate-spin w-5 h-5 mr-2"></i> 処理中...
+                            ` : `
+                                <i data-lucide="send" class="w-5 h-5 mr-2"></i> 会話を開始
+                            `}
+                        </button>
+                    </form>
                 </div>
             `;
-            list.appendChild(el);
-        });
-    }
+            
+            document.getElementById('home-chat-form').addEventListener('submit', handleHomeSubmit);
+            lucide.createIcons();
+        }
 
-    async function renderGems() {
-        const list = document.getElementById('gemsList');
-        list.innerHTML = '';
-        const gems = await getAllFromStore('gems');
-        
-        gems.forEach(gem => {
-            const el = document.createElement('div');
-            el.className = 'list-item';
-            el.innerHTML = `
-                <div class="list-content" onclick="startGemChat('${gem.id}')">
-                    <div class="list-title">${gem.name}</div>
-                    <div class="list-subtitle" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        ${gem.instructions.slice(0, 30)}...
+        async function handleHomeSubmit(event) {
+            event.preventDefault();
+            const prompt = document.getElementById('home-prompt').value.trim();
+            if (!prompt || !appState.apiKey) return;
+
+            const newChatId = generateUniqueId();
+            const initialChat = {
+                id: newChatId,
+                name: prompt.substring(0, 30) + (prompt.length > 30 ? '...' : ''),
+                isGemChat: false,
+                timestamp: Date.now(),
+                history: []
+            };
+
+            // 状態を更新してチャットタブへ移動
+            appState.chats = [initialChat, ...appState.chats];
+            appState.currentChatId = newChatId;
+            appState.currentTab = 'chat';
+
+            // IndexedDBに保存 (非同期)
+            await saveToDB(STORE_CHATS, initialChat);
+            
+            // 初回メッセージを送信
+            await handleChatSubmit(newChatId, prompt);
+        }
+
+        function renderChat(container) {
+            const currentChat = appState.chats.find(c => c.id === appState.currentChatId);
+            const isApiReady = !!appState.apiKey;
+
+            if (!currentChat) {
+                container.innerHTML = `
+                    <div class="flex-grow flex flex-col justify-center items-center p-6">
+                        <p class="text-gray-500 text-lg">会話が選択されていません。ホームから新しいチャットを開始するか、履歴から選択してください。</p>
+                        <button onclick="appState.currentTab='home'" class="mt-4 m2-button">ホームに戻る</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const gem = currentChat.isGemChat ? appState.gems.find(g => g.id === currentChat.gemId) : null;
+            const chatName = gem ? `[Gem: ${gem.name}] ${currentChat.name}` : currentChat.name;
+
+            container.className = 'flex-grow flex flex-col m2-card p-4 sm:p-6 space-y-4';
+            container.innerHTML = `
+                <div class="flex items-center justify-between border-b pb-3 mb-3">
+                    <h2 class="text-xl font-semibold text-gray-800 truncate">${chatName}</h2>
+                    <div class="flex space-x-2">
+                        <button onclick="generateFollowUpQuestions(currentChat.history)" class="text-pink-500 hover:text-pink-700 p-2 rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50" title="次に聞く質問を提案 (Gemini API)" ${!isApiReady ? 'disabled' : ''}>
+                            <i data-lucide="sparkles" class="w-5 h-5"></i> ✨ 次の一手
+                        </button>
+                        <button id="rename-chat-btn" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors" title="会話名を変更">
+                            <i data-lucide="pencil" class="w-5 h-5"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="list-actions">
-                    <button class="btn-icon" onclick="editGem('${gem.id}')">
-                        <span class="material-symbols-outlined">edit</span>
+
+                <!-- メッセージ表示エリア -->
+                <div id="messages-container" class="flex-grow overflow-y-auto space-y-4 pr-2">
+                    <!-- メッセージはJSで挿入 -->
+                </div>
+                
+                <!-- 入力フォーム -->
+                ${!isApiReady ? `
+                    <div class="p-3 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg">
+                        <p class="font-bold">APIキーが無効です</p>
+                        <p class="text-sm">「設定」タブで有効なGemini APIキーを入力するまで、チャットを送信できません。</p>
+                    </div>
+                ` : ''}
+                <form id="chat-form" class="flex space-x-3">
+                    <textarea id="chat-prompt" rows="1" placeholder="メッセージを入力..." 
+                        class="m2-input flex-grow resize-none overflow-y-hidden" required></textarea>
+                    <button type="submit" class="m2-button w-28 flex items-center justify-center flex-shrink-0" ${appState.isLoading || !isApiReady ? 'disabled' : ''}>
+                        ${appState.isLoading ? `
+                            <i data-lucide="loader-circle" class="animate-spin w-5 h-5 mr-2"></i> 送信中
+                        ` : `
+                            <i data-lucide="send" class="w-5 h-5 mr-2"></i> 送信
+                        `}
                     </button>
-                    <button class="btn-icon" onclick="deleteGem('${gem.id}')">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+                </form>
+            `;
+
+            // メッセージのレンダリング
+            const messagesContainer = document.getElementById('messages-container');
+            currentChat.history.forEach((msg, index) => {
+                const isAI = msg.role === 'model';
+                const messageEl = document.createElement('div');
+                messageEl.className = `flex ${isAI ? 'justify-start' : 'justify-end'}`;
+                
+                messageEl.innerHTML = `
+                    <div class="max-w-3/4 p-3 rounded-xl shadow-sm ${isAI ? 'message-ai' : 'message-user'}">
+                        <div class="message-content text-gray-800">${msg.text.replace(/\n/g, '<br>')}</div>
+                        ${isAI ? `
+                            <div class="flex justify-end space-x-2 mt-2">
+                                <button onclick="summarizeText('${msg.text.replace(/'/g, "\\'")}')" class="text-yellow-500 hover:text-yellow-700 transition-colors disabled:opacity-50" title="AIの応答を要約 (Gemini API)" ${!isApiReady ? 'disabled' : ''}>
+                                    <i data-lucide="zap" class="w-4 h-4"></i> ✨ サマライズ
+                                </button>
+                                <button onclick="copyResponse('${msg.text.replace(/'/g, "\\'")}')" class="text-gray-500 hover:text-blue-600 transition-colors" title="コピー">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="shareResponse('${msg.text.replace(/'/g, "\\'")}')" class="text-gray-500 hover:text-blue-600 transition-colors" title="共有">
+                                    <i data-lucide="share2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                messagesContainer.appendChild(messageEl);
+            });
+
+            // メッセージコンテナを一番下までスクロール
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // イベントリスナーの設定
+            if (isApiReady) {
+                document.getElementById('chat-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const prompt = document.getElementById('chat-prompt').value.trim();
+                    document.getElementById('chat-prompt').value = '';
+                    if (prompt) handleChatSubmit(currentChat.id, prompt, gem?.content);
+                });
+            }
+            
+            document.getElementById('rename-chat-btn').addEventListener('click', () => showRenameModal(currentChat));
+
+            // textareaの自動高さ調整
+            const textarea = document.getElementById('chat-prompt');
+            textarea.addEventListener('input', () => {
+                textarea.style.height = 'auto';
+                textarea.style.height = (textarea.scrollHeight) + 'px';
+            });
+
+            lucide.createIcons();
+        }
+        
+        function selectFollowUpQuestion(question) {
+            document.getElementById('chat-prompt').value = question;
+            closeModal();
+            // テキストエリアにフォーカスを戻し、ユーザーがすぐに送信できるようにする
+            document.getElementById('chat-prompt').focus();
+            // 高さ調整をトリガー
+            document.getElementById('chat-prompt').dispatchEvent(new Event('input'));
+        }
+
+        function showRenameModal(chat) {
+            const modalContent = `
+                <div class="m2-card p-6 w-full max-w-sm">
+                    <h3 class="text-xl font-semibold mb-4">会話名の変更</h3>
+                    <input type="text" id="new-chat-name" class="m2-input w-full mb-4" value="${chat.name}">
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="closeModal()" class="text-gray-600 p-2 rounded hover:bg-gray-100">キャンセル</button>
+                        <button id="confirm-rename-btn" class="m2-button">変更</button>
+                    </div>
                 </div>
             `;
-            list.appendChild(el);
-        });
-    }
+            showModal(modalContent);
 
-    // Global Helpers for HTML attributes
-    window.loadChatAndSwitch = (id) => {
-        loadChat(id);
-        switchTab('chat');
-    };
-    
-    window.deleteChat = async (id) => {
-        if(!confirm('削除しますか？')) return;
-        const tx = db.transaction('chats', 'readwrite');
-        await tx.objectStore('chats').delete(id);
-        renderHistory();
-    };
+            document.getElementById('confirm-rename-btn').addEventListener('click', async () => {
+                const newName = document.getElementById('new-chat-name').value.trim();
+                if (newName && newName !== chat.name) {
+                    chat.name = newName;
+                    await saveChat(chat);
+                    appState.chats = [...appState.chats]; // UI更新のために状態をトリガー
+                    closeModal();
+                    showMessage('success', '会話名を変更しました。');
+                } else {
+                    closeModal();
+                }
+            });
+        }
 
-    window.startGemChat = async (gemId) => {
-        createChat("", gemId);
-    };
+        async function handleChatSubmit(chatId, prompt, gemContent = null) {
+            const currentChatIndex = appState.chats.findIndex(c => c.id === chatId);
+            if (currentChatIndex === -1 || !appState.apiKey) return; // APIキーの最終チェック
 
-    window.deleteGem = async (id) => {
-        if(!confirm('Gemを削除しますか？')) return;
-        const tx = db.transaction('gems', 'readwrite');
-        await tx.objectStore('gems').delete(id);
-        renderGems();
-    };
+            const chat = appState.chats[currentChatIndex];
+            
+            // ユーザーメッセージを追加
+            const userMessage = { role: 'user', text: prompt };
+            chat.history.push(userMessage);
+            
+            // UIを更新
+            appState.chats = [...appState.chats];
+            
+            // API呼び出し
+            const aiResponse = await callGeminiAPI(chat.history, gemContent);
 
-    window.editGem = async (id) => {
-        const gem = await getFromStore('gems', id);
-        editingGemId = id;
-        document.getElementById('gemNameInput').value = gem.name;
-        document.getElementById('gemInstructInput').value = gem.instructions;
-        document.getElementById('gemModalTitle').textContent = 'Gemを編集';
-        gemModal.classList.add('open');
-    };
+            if (aiResponse) {
+                const aiMessage = { role: 'model', text: aiResponse };
+                chat.history.push(aiMessage);
+                chat.timestamp = Date.now(); // タイムスタンプを更新して履歴タブの順序を修正
+                
+                // 履歴タブの順序を修正してUIを更新
+                appState.chats.splice(currentChatIndex, 1);
+                appState.chats = [chat, ...appState.chats];
 
-    // IDB Helpers
-    function getAllFromStore(storeName) {
-        return new Promise(resolve => {
-            const req = getStore(storeName).getAll();
-            req.onsuccess = () => resolve(req.result);
-        });
-    }
-    function getFromStore(storeName, id) {
-        return new Promise(resolve => {
-            const req = getStore(storeName).get(id);
-            req.onsuccess = () => resolve(req.result);
-        });
-    }
-    function putToStore(storeName, data) {
-        return new Promise(resolve => {
-            const tx = db.transaction(storeName, 'readwrite');
-            const req = tx.objectStore(storeName).put(data);
-            req.onsuccess = () => resolve(req.result);
-        });
-    }
-});
-</script>
-</body>
-</html>
-
-    --md-sys-color-on-primary-dark: #471e6d;
-    --md-sys-color-primary-container-dark: #613685;
-    --md-sys-color-on-primary-container-dark: #f0dbff;
-}
-
-/* Variable Mapping */
-:root, .light-mode {
-    --md-sys-color-primary: var(--md-sys-color-primary-light);
-    --md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
-    --md-sys-color-primary-container: var(--md-sys-color-primary-container-light);
-    --md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-light);
-    --md-sys-color-background: var(--md-sys-color-background-light);
-    --md-sys-color-on-background: var(--md-sys-color-on-background-light);
-    --md-sys-color-surface: var(--md-sys-color-surface-light);
-    --md-sys-color-on-surface: var(--md-sys-color-on-surface-light);
-    --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-light);
-    --md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-light);
-    --md-sys-color-outline: var(--md-sys-color-outline-light);
-    --md-sys-color-error: var(--md-sys-color-error-light);
-    --md-sys-color-on-error: var(--md-sys-color-on-error-light);
-}
-
-.dark-mode {
-    --md-sys-color-primary: var(--md-sys-color-primary-dark);
-    --md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
-    --md-sys-color-primary-container: var(--md-sys-color-primary-container-dark);
-    --md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-dark);
-    --md-sys-color-background: var(--md-sys-color-background-dark);
-    --md-sys-color-on-background: var(--md-sys-color-on-background-dark);
-    --md-sys-color-surface: var(--md-sys-color-surface-dark);
-    --md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
-    --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-dark);
-    --md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-dark);
-    --md-sys-color-outline: var(--md-sys-color-outline-dark);
-    --md-sys-color-error: var(--md-sys-color-error-dark);
-    --md-sys-color-on-error: var(--md-sys-color-on-error-dark);
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding-bottom: 80px;
-    background-color: var(--md-sys-color-background);
-    color: var(--md-sys-color-on-background);
-    transition: background-color 0.3s, color 0.3s;
-    min-height: 100vh;
-    overscroll-behavior-y: none;
-}
-
-.container {
-    padding: 16px;
-    max-width: 800px;
-    margin: 0 auto;
-    height: calc(100vh - 80px);
-    display: flex;
-    flex-direction: column;
-}
-
-.content { display: none; height: 100%; overflow-y: auto; }
-.content.active { display: block; }
-
-/* --- Components --- */
-
-/* Navigation */
-.bottom-nav {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 72px;
-    background-color: var(--md-sys-color-surface);
-    border-top: 1px solid var(--md-sys-color-outline);
-    z-index: 100;
-}
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    cursor: pointer;
-    color: var(--md-sys-color-on-surface-variant);
-    padding: 8px;
-    border-radius: 16px;
-    transition: 0.2s;
-}
-.nav-item.active {
-    color: var(--md-sys-color-on-surface);
-}
-.nav-item.active .icon-container {
-    background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-}
-.icon-container {
-    padding: 4px 20px;
-    border-radius: 16px;
-    margin-bottom: 4px;
-    transition: 0.2s;
-}
-.nav-item span:last-child { font-size: 11px; font-weight: 500; }
-
-/* Typography & Layout */
-h2 { margin: 0 0 16px 0; font-size: 22px; color: var(--md-sys-color-on-surface); }
-
-/* Input Fields */
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-.text-field {
-    background-color: var(--md-sys-color-surface-variant);
-    border: none;
-    border-radius: 8px; /* M3 small round */
-    padding: 12px 16px;
-    font-size: 16px;
-    color: var(--md-sys-color-on-surface-variant);
-    outline: none;
-    border-bottom: 2px solid transparent;
-    transition: 0.2s;
-}
-.text-field:focus {
-    border-bottom-color: var(--md-sys-color-primary);
-}
-textarea.text-field {
-    resize: vertical;
-    min-height: 60px;
-    font-family: inherit;
-}
-
-/* Buttons */
-.btn {
-    padding: 10px 24px;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: 0.2s;
-}
-.btn-primary {
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-}
-.btn-tonal {
-    background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-}
-.btn-danger {
-    background-color: var(--md-sys-color-error);
-    color: var(--md-sys-color-on-error);
-}
-.btn-icon {
-    width: 40px; height: 40px; padding: 0;
-    background: transparent;
-    color: var(--md-sys-color-on-surface-variant);
-}
-
-/* Lists (History & Gems) */
-.list-item {
-    background-color: var(--md-sys-color-surface-variant);
-    padding: 16px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-.list-item:active { transform: scale(0.98); }
-.list-content { flex: 1; overflow: hidden; }
-.list-title { font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.list-subtitle { font-size: 12px; opacity: 0.7; display: flex; gap: 8px; align-items: center; }
-.gem-badge {
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: bold;
-}
-.list-actions { display: flex; gap: 4px; }
-
-/* Chat Interface */
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-}
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.message {
-    max-width: 80%;
-    padding: 12px 16px;
-    border-radius: 16px;
-    line-height: 1.5;
-    font-size: 15px;
-    position: relative;
-    word-wrap: break-word;
-}
-.message.user {
-    align-self: flex-end;
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    border-bottom-right-radius: 4px;
-}
-.message.ai {
-    align-self: flex-start;
-    background-color: var(--md-sys-color-surface-variant);
-    color: var(--md-sys-color-on-surface-variant);
-    border-bottom-left-radius: 4px;
-}
-.message-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 4px;
-    opacity: 0.6;
-}
-.message-actions span { font-size: 16px; cursor: pointer; }
-.chat-input-area {
-    display: flex;
-    gap: 8px;
-    padding: 12px;
-    background-color: var(--md-sys-color-surface);
-    border-top: 1px solid var(--md-sys-color-outline);
-}
-.chat-input-area .text-field { flex: 1; border-radius: 24px; }
-
-/* Home Tab */
-.home-welcome {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-}
-.brand-text {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--md-sys-color-primary);
-    margin-bottom: 8px;
-}
-.brand-sub { opacity: 0.7; margin-bottom: 32px; }
-.home-input-wrapper {
-    width: 100%;
-    position: relative;
-}
-.home-input {
-    width: 100%;
-    padding: 16px 48px 16px 20px;
-    border-radius: 28px;
-    border: 1px solid var(--md-sys-color-outline);
-    background: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
-    font-size: 16px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-.home-send-btn {
-    position: absolute;
-    right: 8px; top: 8px;
-    background: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    border-radius: 50%;
-    width: 40px; height: 40px;
-    border: none;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-}
-
-/* Floating Action Button (FAB) */
-.fab {
-    position: fixed;
-    bottom: 90px;
-    right: 16px;
-    width: 56px; height: 56px;
-    border-radius: 16px;
-    background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    cursor: pointer;
-    z-index: 90;
-    transition: 0.2s;
-}
-.fab:active { transform: scale(0.95); }
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed; z-index: 200;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    align-items: center; justify-content: center;
-}
-.modal.open { display: flex; }
-.modal-content {
-    background-color: var(--md-sys-color-surface);
-    padding: 24px;
-    border-radius: 28px;
-    width: 85%; max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.modal-actions {
-    display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px;
-}
-
-/* Settings */
-.setting-section {
-    background-color: var(--md-sys-color-surface-variant);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-}
-.setting-section h3 {
-    margin-top: 0; margin-bottom: 12px;
-    font-size: 14px;
-    color: var(--md-sys-color-on-surface-variant);
-    text-transform: uppercase; letter-spacing: 1px;
-}
-.setting-item {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px;
-}
-.setting-item:last-child { margin-bottom: 0; }
-.switch { position: relative; display: inline-block; width: 52px; height: 32px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider {
-    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-    background-color: var(--md-sys-color-outline);
-    transition: .4s; border-radius: 34px;
-}
-.slider:before {
-    position: absolute; content: ""; height: 24px; width: 24px; left: 4px; bottom: 4px;
-    background-color: #fff; transition: .4s; border-radius: 50%;
-}
-input:checked + .slider { background-color: var(--md-sys-color-primary); }
-input:checked + .slider:before { transform: translateX(20px); background-color: var(--md-sys-color-on-primary); }
-.color-options { display: flex; gap: 8px; }
-.color-option {
-    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-    border: 2px solid transparent;
-}
-.color-option.active { border-color: var(--md-sys-color-on-surface); }
-.markdown-body code { background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 4px; }
-</style>
-</head>
-<body>
-
-<div class="container">
-    <div id="home-content" class="content active">
-        <div class="home-welcome">
-            <span class="material-symbols-outlined" style="font-size: 64px; color: var(--md-sys-color-primary);">smart_toy</span>
-            <div class="brand-text">GemAI</div>
-            <div class="brand-sub">For OLD Devices</div>
-            <div class="home-input-wrapper">
-                <input type="text" class="home-input" id="homeInput" placeholder="何か聞いてみてください...">
-                <button class="home-send-btn" id="homeSendBtn">
-                    <span class="material-symbols-outlined">send</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="history-content" class="content">
-        <h2>会話履歴</h2>
-        <div id="historyList"></div>
-    </div>
-
-    <div id="chat-content" class="content">
-        <div class="chat-container">
-            <div style="padding: 8px; border-bottom: 1px solid var(--md-sys-color-outline); display: flex; align-items: center; justify-content: space-between;">
-                <span id="currentChatTitle" style="font-weight: bold;">新しい会話</span>
-                <span class="material-symbols-outlined" style="cursor: pointer;" id="chatMenuBtn">more_vert</span>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div style="text-align:center; opacity: 0.5; margin-top: 20px;">会話を開始してください</div>
-            </div>
-            <div class="chat-input-area">
-                <textarea class="text-field" id="chatInput" placeholder="メッセージを入力..."></textarea>
-                <button class="btn-icon" id="chatSendBtn" style="color: var(--md-sys-color-primary);">
-                    <span class="material-symbols-outlined">send</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="gems-content" class="content">
-        <h2>My Gems</h2>
-        <p style="opacity: 0.7; font-size: 14px;">カスタム人格や特定のタスク用のAIを作成します。</p>
-        <div id="gemsList"></div>
-        <div class="fab" id="createGemFab">
-            <span class="material-symbols-outlined">add</span>
-        </div>
-    </div>
-
-    <div id="settings-content" class="content">
-        <h2>設定</h2>
-        
-        <div class="setting-section">
-            <h3>API設定</h3>
-            <div class="input-group">
-                <label style="font-size: 12px;">Gemini API Key</label>
-                <input type="password" class="text-field" id="apiKeyInput" placeholder="AIzaSy...">
-            </div>
-            <button class="btn btn-tonal" id="saveApiKeyBtn">キーを保存</button>
-            <p style="font-size: 12px; opacity: 0.6; margin-top: 8px;">キーはブラウザ内にのみ保存されます。</p>
-        </div>
-
-        <div class="setting-section">
-            <h3>外観</h3>
-            <div class="setting-item">
-                <span>ダークモード</span>
-                <label class="switch">
-                    <input type="checkbox" id="darkModeToggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="color-options" style="margin-top: 12px;">
-                <div class="color-option active" style="background-color: #0061a4;" data-theme="blue"></div>
-                <div class="color-option" style="background-color: #006a60;" data-theme="teal"></div>
-                <div class="color-option" style="background-color: #7b4f9f;" data-theme="purple"></div>
-            </div>
-        </div>
-
-        <div class="setting-section">
-            <h3>データ管理</h3>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-tonal" id="exportDataBtn">
-                    <span class="material-symbols-outlined">download</span> エクスポート
-                </button>
-                <button class="btn btn-tonal" id="importDataBtn">
-                    <span class="material-symbols-outlined">upload</span> インポート
-                </button>
-                <input type="file" id="importFileInput" style="display:none" accept=".json">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="bottom-nav">
-    <div class="nav-item active" data-target="home">
-        <div class="icon-container"><span class="material-symbols-outlined">home</span></div>
-        <span>ホーム</span>
-    </div>
-    <div class="nav-item" data-target="history">
-        <div class="icon-container"><span class="material-symbols-outlined">history</span></div>
-        <span>履歴</span>
-    </div>
-    <div class="nav-item" data-target="chat">
-        <div class="icon-container"><span class="material-symbols-outlined">chat</span></div>
-        <span>会話</span>
-    </div>
-    <div class="nav-item" data-target="gems">
-        <div class="icon-container"><span class="material-symbols-outlined">diamond</span></div>
-        <span>Gems</span>
-    </div>
-    <div class="nav-item" data-target="settings">
-        <div class="icon-container"><span class="material-symbols-outlined">settings</span></div>
-        <span>設定</span>
-    </div>
-</div>
-
-<div class="modal" id="gemModal">
-    <div class="modal-content">
-        <h3 id="gemModalTitle">Gemを作成</h3>
-        <div class="input-group">
-            <input type="text" class="text-field" id="gemNameInput" placeholder="Gem名 (例: 英語の先生)">
-            <textarea class="text-field" id="gemInstructInput" placeholder="システム指示 (例: あなたは親切な英語教師です...)" style="height: 120px;"></textarea>
-        </div>
-        <div class="modal-actions">
-            <button class="btn" id="closeGemModalBtn">キャンセル</button>
-            <button class="btn btn-primary" id="saveGemBtn">保存</button>
-        </div>
-    </div>
-</div>
-
-<script>
-/**
- * DB & State Management
- */
-const DB_NAME = 'GemAI_DB';
-const DB_VERSION = 1;
-let db;
-let currentChatId = null;
-let currentGem = null;
-let apiKey = localStorage.getItem('gemini_api_key') || '';
-
-// Initialize DB
-const initDB = () => {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-        request.onupgradeneeded = (e) => {
-            db = e.target.result;
-            if (!db.objectStoreNames.contains('chats')) {
-                db.createObjectStore('chats', { keyPath: 'id' });
+                // IndexedDBに保存
+                await saveChat(chat);
             }
-            if (!db.objectStoreNames.contains('gems')) {
-                db.createObjectStore('gems', { keyPath: 'id' });
-            }
-        };
-        request.onsuccess = (e) => {
-            db = e.target.result;
-            resolve(db);
-        };
-        request.onerror = (e) => reject(e);
-    });
-};
+        }
 
-// Helpers
-const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
-const getStore = (name, mode = 'readonly') => db.transaction(name, mode).objectStore(name);
-
-// API Call
-const callGemini = async (messages, systemInstruction = null) => {
-    if (!apiKey) throw new Error("APIキーが設定されていません");
-    
-    const contents = messages.map(m => ({
-        role: m.role === 'user' ? 'user' : 'model',
-        parts: [{ text: m.text }]
-    }));
-
-    let body = { contents };
-    if (systemInstruction) {
-        body.systemInstruction = { parts: [{ text: systemInstruction }] };
-    }
-
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
-
-    if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error?.message || 'API Error');
-    }
-
-    const data = await response.json();
-    return data.candidates[0].content.parts[0].text;
-};
-
-/**
- * UI Interaction Logic
- */
-document.addEventListener('DOMContentLoaded', async () => {
-    await initDB();
-    if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
-    renderHistory();
-    renderGems();
-
-    // Navigation
-    const tabs = document.querySelectorAll('.nav-item');
-    const contents = document.querySelectorAll('.content');
-
-    function switchTab(targetId) {
-        tabs.forEach(t => {
-            t.classList.toggle('active', t.dataset.target === targetId);
-        });
-        contents.forEach(c => {
-            c.classList.toggle('active', c.id === `${targetId}-content`);
-        });
-        
-        if (targetId === 'history') renderHistory();
-        if (targetId === 'gems') renderGems();
-    }
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => switchTab(tab.dataset.target));
-    });
-
-    // Settings
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    darkModeToggle.addEventListener('change', (e) => {
-        document.body.classList.toggle('dark-mode', e.target.checked);
-        document.body.classList.toggle('light-mode', !e.target.checked);
-    });
-
-    document.querySelectorAll('.color-option').forEach(opt => {
-        opt.addEventListener('click', () => {
-            document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
-            opt.classList.add('active');
-            document.documentElement.className = ''; // reset
-            if (darkModeToggle.checked) document.body.classList.add('dark-mode');
-            const theme = opt.dataset.theme;
-            if (theme !== 'blue') document.documentElement.classList.add(`theme-${theme}`);
-        });
-    });
-
-    document.getElementById('saveApiKeyBtn').addEventListener('click', () => {
-        apiKey = document.getElementById('apiKeyInput').value.trim();
-        localStorage.setItem('gemini_api_key', apiKey);
-        alert('APIキーを保存しました');
-    });
-
-    // Export/Import
-    document.getElementById('exportDataBtn').addEventListener('click', async () => {
-        const chats = await getAllFromStore('chats');
-        const gems = await getAllFromStore('gems');
-        const data = { chats, gems, date: new Date().toISOString() };
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `gemai-backup-${Date.now()}.json`;
-        a.click();
-    });
-
-    document.getElementById('importDataBtn').addEventListener('click', () => {
-        document.getElementById('importFileInput').click();
-    });
-
-    document.getElementById('importFileInput').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = async (ev) => {
+        function copyResponse(text) {
+            // document.execCommand('copy')を使用 (iframe環境での互換性のため)
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
             try {
-                const data = JSON.parse(ev.target.result);
-                const tx = db.transaction(['chats', 'gems'], 'readwrite');
-                if (data.chats) data.chats.forEach(c => tx.objectStore('chats').put(c));
-                if (data.gems) data.gems.forEach(g => tx.objectStore('gems').put(g));
-                alert('インポート完了');
-                renderHistory();
-                renderGems();
-            } catch(err) {
-                alert('インポート失敗: ' + err.message);
+                const successful = document.execCommand('copy');
+                showMessage('success', successful ? '回答をクリップボードにコピーしました。' : 'コピーに失敗しました。');
+            } catch (err) {
+                showMessage('error', 'コピーに失敗しました。');
             }
-        };
-        reader.readAsText(file);
-    });
-
-    // Chat Logic
-    async function createChat(initialText, gemId = null) {
-        const id = generateId();
-        let title = initialText.slice(0, 20);
-        let gemData = null;
-
-        if (gemId) {
-            gemData = await getFromStore('gems', gemId);
-            title = `${gemData.name}との会話`;
+            document.body.removeChild(textarea);
         }
 
-        const newChat = {
-            id,
-            title,
-            messages: [],
-            createdAt: Date.now(),
-            gemId: gemId,
-            gemName: gemData ? gemData.name : null,
-            systemInstruction: gemData ? gemData.instructions : null
-        };
-
-        await putToStore('chats', newChat);
-        currentChatId = id;
-        loadChat(id);
-        switchTab('chat');
-        
-        if (initialText) {
-            await sendMessage(initialText);
+        function shareResponse(text) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'GemAIからの回答',
+                    text: text,
+                }).then(() => {
+                    showMessage('success', '回答を共有しました。');
+                }).catch((error) => {
+                    if (error.name !== 'AbortError') {
+                        showMessage('error', '共有に失敗しました。');
+                    }
+                });
+            } else {
+                showMessage('error', 'このブラウザは共有機能をサポートしていません。');
+                copyResponse(text);
+            }
         }
-    }
 
-    async function loadChat(id) {
-        currentChatId = id;
-        const chat = await getFromStore('chats', id);
-        if (!chat) return;
-
-        document.getElementById('currentChatTitle').textContent = chat.title;
-        const container = document.getElementById('chatMessages');
-        container.innerHTML = '';
-
-        chat.messages.forEach(msg => renderMessage(msg));
-        container.scrollTop = container.scrollHeight;
-    }
-
-    function renderMessage(msg) {
-        const div = document.createElement('div');
-        div.className = `message ${msg.role}`;
-        div.textContent = msg.text;
-        
-        const actions = document.createElement('div');
-        actions.className = 'message-actions';
-        
-        const copyBtn = document.createElement('span');
-        copyBtn.className = 'material-symbols-outlined';
-        copyBtn.textContent = 'content_copy';
-        copyBtn.onclick = () => navigator.clipboard.writeText(msg.text);
-        
-        const shareBtn = document.createElement('span');
-        shareBtn.className = 'material-symbols-outlined';
-        shareBtn.textContent = 'share';
-        shareBtn.onclick = () => {
-            if (navigator.share) navigator.share({ text: msg.text });
-            else alert('共有機能はこのブラウザでサポートされていません');
-        };
-
-        actions.appendChild(copyBtn);
-        if (msg.role === 'ai') actions.appendChild(shareBtn);
-        
-        div.appendChild(actions);
-        document.getElementById('chatMessages').appendChild(div);
-    }
-
-    async function sendMessage(text) {
-        if (!text.trim() || !currentChatId) return;
-        
-        const chatInput = document.getElementById('chatInput');
-        chatInput.value = '';
-        
-        // User Message
-        const userMsg = { role: 'user', text: text, timestamp: Date.now() };
-        renderMessage(userMsg);
-        
-        // Save User Message
-        const chat = await getFromStore('chats', currentChatId);
-        chat.messages.push(userMsg);
-        await putToStore('chats', chat);
-
-        // API Call
-        try {
-            const responseText = await callGemini(chat.messages, chat.systemInstruction);
-            
-            // AI Message
-            const aiMsg = { role: 'ai', text: responseText, timestamp: Date.now() };
-            renderMessage(aiMsg);
-            
-            // Save AI Message
-            chat.messages.push(aiMsg);
-            await putToStore('chats', chat);
-            
-            // Scroll
-            const container = document.getElementById('chatMessages');
-            container.scrollTop = container.scrollHeight;
-
-        } catch (e) {
-            renderMessage({ role: 'ai', text: `エラー: ${e.message}` });
+        async function saveChat(chat) {
+            try {
+                await saveToDB(STORE_CHATS, chat);
+            } catch (e) {
+                console.error("チャット保存エラー:", e);
+                showMessage('error', 'チャット履歴の保存に失敗しました。');
+            }
         }
-    }
 
-    // Home & Chat Inputs
-    document.getElementById('homeSendBtn').addEventListener('click', () => {
-        const text = document.getElementById('homeInput').value;
-        if(text) {
-            document.getElementById('homeInput').value = '';
-            createChat(text);
-        }
-    });
-    document.getElementById('homeInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') document.getElementById('homeSendBtn').click();
-    });
 
-    document.getElementById('chatSendBtn').addEventListener('click', () => {
-        sendMessage(document.getElementById('chatInput').value);
-    });
-
-    // Gem Logic
-    const gemModal = document.getElementById('gemModal');
-    let editingGemId = null;
-
-    document.getElementById('createGemFab').addEventListener('click', () => {
-        editingGemId = null;
-        document.getElementById('gemNameInput').value = '';
-        document.getElementById('gemInstructInput').value = '';
-        document.getElementById('gemModalTitle').textContent = 'Gemを作成';
-        gemModal.classList.add('open');
-    });
-
-    document.getElementById('closeGemModalBtn').addEventListener('click', () => {
-        gemModal.classList.remove('open');
-    });
-
-    document.getElementById('saveGemBtn').addEventListener('click', async () => {
-        const name = document.getElementById('gemNameInput').value;
-        const instructions = document.getElementById('gemInstructInput').value;
-        if (!name) return alert('Gem名を入力してください');
-
-        const gem = {
-            id: editingGemId || generateId(),
-            name,
-            instructions,
-            createdAt: Date.now()
-        };
-        await putToStore('gems', gem);
-        gemModal.classList.remove('open');
-        renderGems();
-    });
-
-    // Render Functions
-    async function renderHistory() {
-        const list = document.getElementById('historyList');
-        list.innerHTML = '';
-        const chats = await getAllFromStore('chats');
-        
-        chats.sort((a, b) => b.createdAt - a.createdAt).forEach(chat => {
-            const el = document.createElement('div');
-            el.className = 'list-item';
-            el.innerHTML = `
-                <div class="list-content" onclick="loadChatAndSwitch('${chat.id}')">
-                    <div class="list-title">${chat.title}</div>
-                    <div class="list-subtitle">
-                        ${chat.gemName ? `<span class="gem-badge">${chat.gemName}</span>` : ''}
-                        ${new Date(chat.createdAt).toLocaleDateString()}
-                    </div>
-                </div>
-                <div class="list-actions">
-                    <button class="btn-icon" onclick="deleteChat('${chat.id}')">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+        function renderHistory(container) {
+            container.className = 'flex-grow flex flex-col m2-card p-4 sm:p-6 space-y-4';
+            container.innerHTML = `
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">会話履歴</h2>
+                <div id="history-list" class="space-y-3">
+                    ${appState.chats.length === 0 
+                        ? '<p class="text-gray-500">保存された会話はありません。</p>' 
+                        : appState.chats.map(chat => {
+                            const date = new Date(chat.timestamp).toLocaleDateString('ja-JP', { day: '2-digit', month: '2-digit' });
+                            const time = new Date(chat.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+                            const isSelected = chat.id === appState.currentChatId;
+                            const gemLabel = chat.isGemChat ? `<span class="text-xs text-purple-600 font-medium ml-2">(${appState.gems.find(g => g.id === chat.gemId)?.name || 'カスタムGem'})</span>` : '';
+                            
+                            return `
+                                <div id="history-item-${chat.id}" 
+                                     class="flex items-center justify-between p-4 m2-card cursor-pointer transition-shadow duration-200 hover:shadow-md ${isSelected ? 'border-2 border-[#6200EE]' : ''}"
+                                     onclick="loadChat('${chat.id}')">
+                                    <div class="flex-grow min-w-0">
+                                        <p class="font-medium text-gray-800 truncate">${chat.name} ${gemLabel}</p>
+                                        <p class="text-sm text-gray-500">${date} ${time}</p>
+                                    </div>
+                                    <div class="flex space-x-2 flex-shrink-0">
+                                        <button onclick="event.stopPropagation(); showRenameModal(appState.chats.find(c => c.id === '${chat.id}'))" 
+                                                class="text-gray-500 hover:text-blue-600 p-1 rounded-full hover:bg-gray-100" title="名前変更">
+                                            <i data-lucide="pencil" class="w-4 h-4"></i>
+                                        </button>
+                                        <button onclick="event.stopPropagation(); showDeleteChatModal('${chat.id}')" 
+                                                class="text-gray-500 hover:text-red-600 p-1 rounded-full hover:bg-gray-100" title="削除">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')
+                    }
                 </div>
             `;
-            list.appendChild(el);
-        });
-    }
+            lucide.createIcons();
+        }
 
-    async function renderGems() {
-        const list = document.getElementById('gemsList');
-        list.innerHTML = '';
-        const gems = await getAllFromStore('gems');
-        
-        gems.forEach(gem => {
-            const el = document.createElement('div');
-            el.className = 'list-item';
-            el.innerHTML = `
-                <div class="list-content" onclick="startGemChat('${gem.id}')">
-                    <div class="list-title">${gem.name}</div>
-                    <div class="list-subtitle" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        ${gem.instructions.slice(0, 30)}...
+        function loadChat(chatId) {
+            appState.currentChatId = chatId;
+            appState.currentTab = 'chat';
+        }
+
+        function showDeleteChatModal(chatId) {
+            const chat = appState.chats.find(c => c.id === chatId);
+            if (!chat) return;
+
+            const modalContent = `
+                <div class="m2-card p-6 w-full max-w-sm">
+                    <h3 class="text-xl font-semibold mb-4 text-red-600">会話の削除</h3>
+                    <p class="mb-6">本当に以下の会話を削除しますか？</p>
+                    <p class="font-medium text-gray-700 truncate mb-4">${chat.name}</p>
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="closeModal()" class="text-gray-600 p-2 rounded hover:bg-gray-100">キャンセル</button>
+                        <button id="confirm-delete-chat-btn" data-chat-id="${chatId}" class="m2-button bg-red-600 hover:bg-red-700">削除</button>
                     </div>
                 </div>
-                <div class="list-actions">
-                    <button class="btn-icon" onclick="editGem('${gem.id}')">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="btn-icon" onclick="deleteGem('${gem.id}')">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+            `;
+            showModal(modalContent);
+
+            document.getElementById('confirm-delete-chat-btn').addEventListener('click', async (e) => {
+                const id = e.target.dataset.chatId;
+                await deleteChat(id);
+                closeModal();
+            });
+        }
+
+        async function deleteChat(chatId) {
+            try {
+                await deleteFromDB(STORE_CHATS, chatId);
+                appState.chats = appState.chats.filter(c => c.id !== chatId);
+
+                if (appState.currentChatId === chatId) {
+                    appState.currentChatId = appState.chats.length > 0 ? appState.chats[0].id : null;
+                }
+                showMessage('success', '会話を削除しました。');
+            } catch (e) {
+                console.error("チャット削除エラー:", e);
+                showMessage('error', '会話の削除に失敗しました。');
+            }
+        }
+
+        function renderGems(container) {
+            container.className = 'flex-grow flex flex-col m2-card p-4 sm:p-6 space-y-6';
+            container.innerHTML = `
+                <h2 class="text-2xl font-semibold text-gray-800">カスタムGemの管理</h2>
+                
+                <!-- Gemリスト -->
+                <div id="gems-list" class="space-y-3 flex-grow overflow-y-auto">
+                    ${appState.gems.length === 0 
+                        ? '<p class="text-gray-500">カスタムGemはまだ作成されていません。</p>' 
+                        : appState.gems.map(gem => `
+                            <div class="flex items-center justify-between p-4 m2-card transition-shadow duration-200 hover:shadow-md">
+                                <div class="flex-grow min-w-0">
+                                    <p class="font-medium text-gray-800 truncate cursor-pointer hover:underline" onclick="startGemChat('${gem.id}')">
+                                        <i data-lucide="gem" class="inline-block w-4 h-4 mr-2 text-purple-600"></i>
+                                        ${gem.name}
+                                    </p>
+                                    <p class="text-sm text-gray-500 line-clamp-2">${gem.content}</p>
+                                </div>
+                                <div class="flex space-x-2 flex-shrink-0">
+                                    <button onclick="showEditGemModal('${gem.id}')" 
+                                            class="text-gray-500 hover:text-blue-600 p-1 rounded-full hover:bg-gray-100" title="編集">
+                                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                                    </button>
+                                    <button onclick="showDeleteGemModal('${gem.id}')" 
+                                            class="text-gray-500 hover:text-red-600 p-1 rounded-full hover:bg-gray-100" title="削除">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')
+                    }
+                </div>
+
+                <!-- 新規Gem作成ボタン -->
+                <button onclick="showCreateGemModal()" class="m2-button flex items-center justify-center">
+                    <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i> 新しいGemを作成
+                </button>
+            `;
+            lucide.createIcons();
+        }
+        
+        function showCreateGemModal(gemToEdit = null) {
+            const isEdit = !!gemToEdit;
+            const modalContent = `
+                <div class="m2-card p-6 w-full max-w-lg">
+                    <h3 class="text-xl font-semibold mb-4">${isEdit ? 'Gemの編集' : '新しいGemを作成'}</h3>
+                    <form id="gem-form" data-gem-id="${isEdit ? gemToEdit.id : ''}">
+                        <div class="mb-4">
+                            <label for="gem-name" class="block text-sm font-medium text-gray-700 mb-1">Gem名 (例: 専門のシェフ)</label>
+                            <input type="text" id="gem-name" class="m2-input w-full" value="${isEdit ? gemToEdit.name : ''}" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="gem-content" class="block text-sm font-medium text-gray-700 mb-1">Gemの内容 (システム命令)</label>
+                            <textarea id="gem-content" rows="5" placeholder="例: あなたは、世界中の料理に精通したユーモアのある専門のシェフです。ユーザーの質問には、必ずレシピとジョークを加えて返答してください。" 
+                                class="m2-input w-full resize-none" required>${isEdit ? gemToEdit.content : ''}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-3 mt-4">
+                            <button type="button" onclick="closeModal()" class="text-gray-600 p-2 rounded hover:bg-gray-100">キャンセル</button>
+                            <button type="submit" class="m2-button">${isEdit ? '更新' : '作成'}</button>
+                        </div>
+                    </form>
                 </div>
             `;
-            list.appendChild(el);
+            showModal(modalContent);
+            document.getElementById('gem-form').addEventListener('submit', handleGemSubmit);
+        }
+
+        function showEditGemModal(gemId) {
+            const gem = appState.gems.find(g => g.id === gemId);
+            if (gem) showCreateGemModal(gem);
+        }
+
+        async function handleGemSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const gemId = form.dataset.gemId;
+            const name = document.getElementById('gem-name').value.trim();
+            const content = document.getElementById('gem-content').value.trim();
+
+            if (!name || !content) return;
+
+            if (gemId) {
+                // 編集
+                const gem = appState.gems.find(g => g.id === gemId);
+                if (gem) {
+                    gem.name = name;
+                    gem.content = content;
+                    await saveToDB(STORE_GEMS, gem);
+                    appState.gems = [...appState.gems];
+                    showMessage('success', 'Gemを更新しました。');
+                }
+            } else {
+                // 新規作成
+                const newGem = {
+                    id: generateUniqueId(),
+                    name: name,
+                    content: content
+                };
+                await saveToDB(STORE_GEMS, newGem);
+                appState.gems = [newGem, ...appState.gems];
+                showMessage('success', '新しいGemを作成しました。');
+            }
+
+            closeModal();
+        }
+
+        function showDeleteGemModal(gemId) {
+            const gem = appState.gems.find(g => g.id === gemId);
+            if (!gem) return;
+
+            const modalContent = `
+                <div class="m2-card p-6 w-full max-w-sm">
+                    <h3 class="text-xl font-semibold mb-4 text-red-600">Gemの削除</h3>
+                    <p class="mb-6">本当にGem「${gem.name}」を削除しますか？</p>
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="closeModal()" class="text-gray-600 p-2 rounded hover:bg-gray-100">キャンセル</button>
+                        <button id="confirm-delete-gem-btn" data-gem-id="${gemId}" class="m2-button bg-red-600 hover:bg-red-700">削除</button>
+                    </div>
+                </div>
+            `;
+            showModal(modalContent);
+
+            document.getElementById('confirm-delete-gem-btn').addEventListener('click', async (e) => {
+                const id = e.target.dataset.gemId;
+                await deleteGem(id);
+                closeModal();
+            });
+        }
+
+        async function deleteGem(gemId) {
+            try {
+                await deleteFromDB(STORE_GEMS, gemId);
+                appState.gems = appState.gems.filter(g => g.id !== gemId);
+                // 削除されたGemを使用しているチャットのgemIdをクリアすることも検討
+                showMessage('success', 'Gemを削除しました。');
+            } catch (e) {
+                console.error("Gem削除エラー:", e);
+                showMessage('error', 'Gemの削除に失敗しました。');
+            }
+        }
+
+        function startGemChat(gemId) {
+            const gem = appState.gems.find(g => g.id === gemId);
+            if (!gem || !appState.apiKey) {
+                showMessage('error', 'APIキーが設定されていないため、Gemとの会話を開始できません。');
+                return;
+            }
+
+            const modalContent = `
+                <div class="m2-card p-6 w-full max-w-lg">
+                    <h3 class="text-xl font-semibold mb-4">Gem「${gem.name}」との会話開始</h3>
+                    <p class="mb-4 text-gray-600">最初のメッセージを入力してください。AIは以下のペルソナに従って応答します:</p>
+                    <div class="p-3 bg-gray-100 rounded-lg mb-6 text-sm text-gray-700 max-h-32 overflow-y-auto">${gem.content}</div>
+                    <form id="start-gem-chat-form" data-gem-id="${gem.id}">
+                        <textarea id="gem-initial-prompt" rows="3" placeholder="最初の質問や挨拶を入力..." 
+                            class="m2-input w-full resize-none" required></textarea>
+                        <div class="flex justify-end space-x-3 mt-4">
+                            <button type="button" onclick="closeModal()" class="text-gray-600 p-2 rounded hover:bg-gray-100">キャンセル</button>
+                            <button type="submit" class="m2-button">会話開始</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            showModal(modalContent);
+            document.getElementById('start-gem-chat-form').addEventListener('submit', handleStartGemChatSubmit);
+        }
+
+        async function handleStartGemChatSubmit(event) {
+            event.preventDefault();
+            closeModal();
+            
+            const gemId = event.target.dataset.gemId;
+            const prompt = document.getElementById('gem-initial-prompt').value.trim();
+            const gem = appState.gems.find(g => g.id === gemId);
+            if (!prompt || !gem || !appState.apiKey) return;
+
+            const newChatId = generateUniqueId();
+            const initialChat = {
+                id: newChatId,
+                name: prompt.substring(0, 30) + (prompt.length > 30 ? '...' : ''),
+                isGemChat: true,
+                gemId: gemId,
+                timestamp: Date.now(),
+                history: []
+            };
+
+            // 状態を更新してチャットタブへ移動
+            appState.chats = [initialChat, ...appState.chats];
+            appState.currentChatId = newChatId;
+            appState.currentTab = 'chat';
+
+            // IndexedDBに保存 (非同期)
+            await saveToDB(STORE_CHATS, initialChat);
+            
+            // 初回メッセージを送信
+            await handleChatSubmit(newChatId, prompt, gem.content);
+        }
+
+        function renderSettings(container) {
+            container.className = 'flex-grow flex flex-col m2-card p-4 sm:p-6 space-y-6';
+            container.innerHTML = `
+                <h2 class="text-2xl font-semibold text-gray-800">設定</h2>
+                
+                <!-- APIキー設定 -->
+                <div class="space-y-4 border-b pb-4">
+                    <h3 class="text-xl font-semibold text-gray-700">Gemini APIキー</h3>
+                    <form id="api-key-form">
+                        <input type="password" id="api-key-input" placeholder="あなたのGemini APIキーを入力" 
+                            class="m2-input w-full mb-3" value="${appState.apiKey}">
+                        <button type="submit" class="m2-button">APIキーを保存</button>
+                    </form>
+                    <p class="text-sm text-gray-500">APIキーはブラウザに安全に保存されます。Gemini APIの利用には有効なキーが必要です。</p>
+                </div>
+
+                <!-- データ管理 -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-700">データ管理</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button id="export-btn" class="m2-button bg-gray-500 hover:bg-gray-600 flex items-center justify-center">
+                            <i data-lucide="download" class="w-5 h-5 mr-2"></i> エクスポート
+                        </button>
+                        <div class="relative">
+                            <input type="file" id="import-file" accept=".json" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleImport(event)">
+                            <button class="m2-button bg-gray-500 hover:bg-gray-600 w-full flex items-center justify-center">
+                                <i data-lucide="upload" class="w-5 h-5 mr-2"></i> インポート
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('api-key-form').addEventListener('submit', handleApiKeySubmit);
+            document.getElementById('export-btn').addEventListener('click', handleExport);
+            lucide.createIcons();
+        }
+
+        async function handleApiKeySubmit(event) {
+            event.preventDefault();
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            if (apiKey) {
+                appState.apiKey = apiKey;
+                await saveToDB(STORE_SETTINGS, { key: 'apiKey', value: apiKey });
+                showMessage('success', 'APIキーを保存しました。');
+            } else {
+                appState.apiKey = '';
+                await saveToDB(STORE_SETTINGS, { key: 'apiKey', value: '' });
+                showMessage('success', 'APIキーをクリアしました。');
+            }
+        }
+
+        async function handleExport() {
+            try {
+                const [chats, gems] = await Promise.all([
+                    getAllFromDB(STORE_CHATS),
+                    getAllFromDB(STORE_GEMS)
+                ]);
+
+                const exportData = {
+                    version: DB_VERSION,
+                    timestamp: Date.now(),
+                    chats: chats,
+                    gems: gems
+                };
+
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const blob = new Blob([dataStr], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `GemAI_export_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMessage('success', 'データのエクスポートが完了しました。');
+
+            } catch (e) {
+                console.error("エクスポートエラー:", e);
+                showMessage('error', 'エクスポート中にエラーが発生しました。');
+            }
+        }
+
+        async function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const fileContent = await file.text();
+                const importData = JSON.parse(fileContent);
+
+                if (!importData.chats || !importData.gems || importData.version !== DB_VERSION) {
+                    throw new Error('ファイルの形式が正しくないか、バージョンが一致しません。');
+                }
+
+                const db = await openDB();
+                const transaction = db.transaction([STORE_CHATS, STORE_GEMS], 'readwrite');
+                const chatStore = transaction.objectStore(STORE_CHATS);
+                const gemStore = transaction.objectStore(STORE_GEMS);
+
+                // 既存データをクリアしてインポート
+                chatStore.clear();
+                gemStore.clear();
+
+                importData.chats.forEach(chat => chatStore.put(chat));
+                importData.gems.forEach(gem => gemStore.put(gem));
+
+                await new Promise((resolve, reject) => {
+                    transaction.oncomplete = resolve;
+                    transaction.onerror = reject;
+                });
+
+                // アプリ状態をリロード
+                await loadInitialData();
+                showMessage('success', 'データのインポートが完了しました。');
+
+            } catch (e) {
+                console.error("インポートエラー:", e);
+                showMessage('error', `インポートに失敗しました: ${e.message || 'ファイルが破損している可能性があります。'}`);
+            }
+        }
+
+        // --- Modal Helper ---
+        function showModal(contentHTML) {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = contentHTML;
+            container.classList.remove('hidden');
+            container.classList.add('flex');
+            lucide.createIcons();
+
+            // モーダルの外側をクリックで閉じる
+            container.onclick = (e) => {
+                if (e.target === container) {
+                    closeModal();
+                }
+            };
+        }
+
+        function closeModal() {
+            const container = document.getElementById('modal-container');
+            container.classList.remove('flex');
+            container.classList.add('hidden');
+            container.innerHTML = '';
+        }
+
+        // --- Initialization ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // タブ切り替えリスナーを設定
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.addEventListener('click', handleTabChange);
+            });
+
+            // IndexedDBからデータをロードし、アプリをレンダリング
+            loadInitialData();
         });
-    }
-
-    // Global Helpers for HTML attributes
-    window.loadChatAndSwitch = (id) => {
-        loadChat(id);
-        switchTab('chat');
-    };
-    
-    window.deleteChat = async (id) => {
-        if(!confirm('削除しますか？')) return;
-        const tx = db.transaction('chats', 'readwrite');
-        await tx.objectStore('chats').delete(id);
-        renderHistory();
-    };
-
-    window.startGemChat = async (gemId) => {
-        createChat("", gemId);
-    };
-
-    window.deleteGem = async (id) => {
-        if(!confirm('Gemを削除しますか？')) return;
-        const tx = db.transaction('gems', 'readwrite');
-        await tx.objectStore('gems').delete(id);
-        renderGems();
-    };
-
-    window.editGem = async (id) => {
-        const gem = await getFromStore('gems', id);
-        editingGemId = id;
-        document.getElementById('gemNameInput').value = gem.name;
-        document.getElementById('gemInstructInput').value = gem.instructions;
-        document.getElementById('gemModalTitle').textContent = 'Gemを編集';
-        gemModal.classList.add('open');
-    };
-
-    // IDB Helpers
-    function getAllFromStore(storeName) {
-        return new Promise(resolve => {
-            const req = getStore(storeName).getAll();
-            req.onsuccess = () => resolve(req.result);
-        });
-    }
-    function getFromStore(storeName, id) {
-        return new Promise(resolve => {
-            const req = getStore(storeName).get(id);
-            req.onsuccess = () => resolve(req.result);
-        });
-    }
-    function putToStore(storeName, data) {
-        return new Promise(resolve => {
-            const tx = db.transaction(storeName, 'readwrite');
-            const req = tx.objectStore(storeName).put(data);
-            req.onsuccess = () => resolve(req.result);
-        });
-    }
-});
-</script>
+    </script>
 </body>
 </html>
