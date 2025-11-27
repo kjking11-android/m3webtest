@@ -3,314 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemAI - シンプルチャットアプリ</title>
-    <!-- iOS 10 Safariとの互換性を最大限に高めるため、Tailwindや複雑なCSSは使用せず、シンプルなFlexboxと標準CSSを使用します -->
+    <title>GemAI - Gemini Web App</title>
     <style>
-        /* フォントと基本設定 */
+        /* 2015年頃の端末でも開けるよう、シンプルなCSSを採用 */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0; /* 薄い背景 */
+            background-color: #f0f0f0;
+            color: #333;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
-        .container {
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: #ddd;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .tab-button {
+            flex-grow: 1;
+            padding: 12px 0;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            background-color: transparent;
+            font-size: 16px;
+            color: #555;
+            transition: background-color 0.2s;
+        }
+
+        .tab-button.active {
+            background-color: white;
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: white;
             max-width: 800px;
             width: 100%;
             margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* フォーム要素のスタイリング */
+        input[type="text"],
+        textarea,
+        button {
             padding: 10px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        /* カードスタイル */
-        .card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 15px;
             margin-bottom: 10px;
-        }
-        /* ナビゲーション */
-        header {
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
-        nav {
-            display: flex;
-            justify-content: space-around;
-        }
-        .tab-button {
-            flex: 1;
-            padding: 10px 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            color: #555;
-            transition: color 0.2s, border-bottom 0.2s;
-            white-space: nowrap;
-        }
-        .tab-active {
-            color: #007aff; /* iOS Blue */
-            border-bottom: 3px solid #007aff;
-            font-weight: bold;
-        }
-        /* 入力とボタン */
-        .input-area {
-            width: 100%;
-            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 14px;
-            resize: none;
+            width: 100%;
         }
-        .button {
-            background-color: #007aff;
+
+        button {
+            background-color: #007bff;
             color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
             transition: background-color 0.2s;
         }
-        .button:disabled {
-            background-color: #a8d5ff;
-            cursor: default;
+
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
         }
-        .button.secondary {
+
+        button:disabled {
             background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* 会話タブのスタイリング */
+        #chat-window {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #d1e7ff;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .gemini-message {
+            background-color: #e9ecef;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .message-actions {
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            padding: 0 5px;
+            width: auto;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        /* 履歴・Gemリストのスタイリング */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        .list-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .list-item-name {
+            flex-grow: 1;
+        }
+
+        .list-actions button {
+            width: auto;
+            padding: 5px 10px;
+            margin-left: 5px;
+            font-size: 12px;
+            background-color: #dc3545;
+        }
+
+        .list-actions button.edit-button {
+            background-color: #ffc107;
             color: #333;
         }
-        /* メッセージ表示エリア */
-        #messages-container {
-            flex-grow: 1;
-            overflow-y: scroll;
-            padding-right: 5px; /* スクロールバーのためのスペース */
+
+        .list-actions button:hover {
+            background-color: #c82333;
         }
-        .message-user, .message-ai {
+
+        /* その他 */
+        .status-message {
             padding: 10px;
-            border-radius: 15px;
-            max-width: 75%;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
             margin-bottom: 10px;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
-            font-size: 14px;
+            border-radius: 4px;
         }
-        .message-user {
-            background-color: #e6f7ff; /* Light iOS blue */
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
+
+        .error-message {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
         }
-        .message-ai {
-            background-color: #f9f9f9;
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-        }
-        /* Flexユーティリティ */
-        .flex-container {
+
+        #chat-header-actions {
             display: flex;
-            align-items: center;
-        }
-        .flex-col {
-            display: flex;
-            flex-direction: column;
-        }
-        .flex-grow {
-            flex-grow: 1;
-        }
-        .justify-between {
             justify-content: space-between;
-        }
-        .justify-end {
-            justify-content: flex-end;
-        }
-        .align-start {
-            align-items: flex-start;
-        }
-        .mt-4 { margin-top: 15px; }
-        .mb-4 { margin-bottom: 15px; }
-        .mr-2 { margin-right: 8px; }
-        .text-center { text-align: center; }
-        .text-sm { font-size: 12px; }
-        .font-bold { font-weight: bold; }
-        .truncate { 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            max-width: 100%; /* 親要素内で省略されるように */
-        }
-
-        /* フォームとチャットエリア */
-        #chat-form {
-            display: flex;
-            margin-top: 10px;
-        }
-        #chat-prompt {
-            flex-grow: 1;
-            margin-right: 10px;
-            max-height: 100px;
-        }
-
-        /* メッセージボックス（トースト） */
-        .message-box {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 10px 15px;
-            border-radius: 6px;
-            color: white;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .message-box.error { background-color: #d9534f; }
-        .message-box.success { background-color: #5cb85c; }
-        
-        /* モーダル */
-        .modal-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
             align-items: center;
-            z-index: 100;
+            margin-bottom: 10px;
         }
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        #chat-name-input {
+            width: calc(100% - 150px);
+            display: inline;
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
-<body class="flex-col min-h-screen">
+<body>
 
-    <!-- メインレイアウト -->
-    <div class="container">
-        <!-- ヘッダーとナビゲーション -->
-        <header class="card">
-            <h1 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 10px;">GemAI</h1>
-            <nav id="nav-tabs" class="flex-container">
-                <button data-tab="home" class="tab-button tab-active">
-                    🏠 ホーム
-                </button>
-                <button data-tab="chat" class="tab-button">
-                    💬 会話
-                </button>
-                <button data-tab="history" class="tab-button">
-                    📜 履歴 (<span id="history-count">0</span>)
-                </button>
-                <button data-tab="gems" class="tab-button">
-                    💎 Gem (<span id="gems-count">0</span>)
-                </button>
-                <button data-tab="settings" class="tab-button">
-                    ⚙️ 設定
-                </button>
-            </nav>
-        </header>
+    <header>
+        <h1>GemAI</h1>
+    </header>
 
-        <!-- コンテンツエリア -->
-        <main id="app-content" class="flex-grow flex-col" style="display: flex;"></main>
+    <div class="tabs">
+        <button class="tab-button active" onclick="switchTab('home')">ホーム</button>
+        <button class="tab-button" onclick="switchTab('chat')">会話</button>
+        <button class="tab-button" onclick="switchTab('history')">履歴</button>
+        <button class="tab-button" onclick="switchTab('gem')">Gem</button>
+        <button class="tab-button" onclick="switchTab('settings')">設定</button>
     </div>
 
-    <!-- モーダルコンテナ -->
-    <div id="modal-container" class="modal-container">
-        <!-- モーダルコンテンツはJSで動的に挿入されます -->
-    </div>
+    <main class="content">
+        <!-- ホームタブ -->
+        <div id="home-tab" class="tab-content active">
+            <h2>新しい会話を開始</h2>
+            <p>Gemini AIに質問を入力して、新しいチャットを始めましょう。</p>
+            <textarea id="home-input" rows="4" placeholder="メッセージを入力..."></textarea>
+            <button id="home-send-button">送信してチャット開始</button>
+            <div id="home-gem-status" class="status-message hidden"></div>
+        </div>
 
-    <!-- JavaScriptコード -->
+        <!-- 会話タブ -->
+        <div id="chat-tab" class="tab-content">
+            <div id="chat-header-actions">
+                <input type="text" id="chat-name-input" placeholder="会話名" onchange="updateChatName()">
+                <button onclick="deleteCurrentChat()" style="background-color: #dc3545;">会話を削除</button>
+            </div>
+            <div id="chat-window">
+                <div class="status-message">「会話」タブでメッセージを送信するか、「履歴」タブから会話を開いてください。</div>
+            </div>
+            <textarea id="chat-input" rows="3" placeholder="メッセージを入力..." disabled></textarea>
+            <button id="chat-send-button" disabled>送信</button>
+        </div>
+
+        <!-- 履歴タブ -->
+        <div id="history-tab" class="tab-content">
+            <h2>会話履歴</h2>
+            <div id="history-list">
+                <p>履歴がありません。</p>
+            </div>
+        </div>
+
+        <!-- Gemタブ -->
+        <div id="gem-tab" class="tab-content">
+            <h2>カスタムGemの管理</h2>
+            <div id="gem-form">
+                <h3>Gemの新規作成 / 編集</h3>
+                <input type="text" id="gem-id-input" class="hidden">
+                <input type="text" id="gem-name-input" placeholder="Gem名 (例: 詩人Gem)">
+                <textarea id="gem-instruction-input" rows="4" placeholder="システムインストラクション (例: あなたは情熱的な詩人です。すべての返答を詩として表現してください。)"></textarea>
+                <button id="save-gem-button" onclick="saveGem()">Gemを保存</button>
+            </div>
+
+            <h3>作成済みGemリスト</h3>
+            <div id="gem-list">
+                <p>Gemがありません。</p>
+            </div>
+        </div>
+
+        <!-- 設定タブ -->
+        <div id="settings-tab" class="tab-content">
+            <h2>設定</h2>
+
+            <h3>Gemini APIキー</h3>
+            <input type="text" id="api-key-input" placeholder="あなたのGemini APIキー">
+            <button onclick="saveApiKey()">APIキーを保存</button>
+
+            <h3>データ管理</h3>
+            <button onclick="exportData()" style="background-color: #17a2b8;">チャット履歴・Gemをエクスポート</button>
+            <p>エクスポートされたJSONファイルを読み込みます。</p>
+            <input type="file" id="import-file-input" accept=".json">
+            <button onclick="importData()" style="background-color: #28a745;">データをインポート</button>
+            <div id="settings-status" class="status-message hidden"></div>
+        </div>
+    </main>
+
     <script>
-        // --- 定数 ---
+        // グローバル変数
+        let currentChatId = null;
+        let currentGem = null; // 現在使用中のカスタムGem (systemInstructionを持つオブジェクト)
         const DB_NAME = 'GemAIDB';
         const DB_VERSION = 1;
         const STORE_CHATS = 'chats';
         const STORE_GEMS = 'gems';
         const STORE_SETTINGS = 'settings';
-        const MODEL_NAME = 'gemini-2.5-flash-preview-09-2025';
+        const GEMINI_MODEL = 'gemini-2.5-flash-preview-09-2025';
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
-        // --- IndexedDB Helper Functions ---
-        async function openDB() {
+        // ===============================================
+        // 1. IndexedDB ラッパー関数
+        // ===============================================
+
+        /**
+         * IndexedDBを開く
+         * @returns {Promise<IDBDatabase>}
+         */
+        function openDB() {
             return new Promise((resolve, reject) => {
-                if (window.indexedDB) {
-                    const request = indexedDB.open(DB_NAME, DB_VERSION);
-                    
-                    request.onupgradeneeded = (event) => {
-                        const db = event.target.result;
-                        if (!db.objectStoreNames.contains(STORE_CHATS)) {
-                            db.createObjectStore(STORE_CHATS, { keyPath: 'id' });
-                        }
-                        if (!db.objectStoreNames.contains(STORE_GEMS)) {
-                            db.createObjectStore(STORE_GEMS, { keyPath: 'id' });
-                        }
-                        if (!db.objectStoreNames.contains(STORE_SETTINGS)) {
-                            db.createObjectStore(STORE_SETTINGS, { keyPath: 'key' });
-                        }
-                    };
-
-                    request.onsuccess = (event) => {
-                        resolve(event.target.result);
-                    };
-
-                    request.onerror = (event) => {
-                        console.error("IndexedDB error:", event.target.errorCode);
-                        reject("IndexedDBのオープンに失敗しました。");
-                    };
-                } else {
-                    reject("お使いのブラウザはIndexedDBをサポートしていません。");
+                if (!window.indexedDB) {
+                    reject(new Error("IndexedDB not supported."));
+                    return;
                 }
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_CHATS)) {
+                        db.createObjectStore(STORE_CHATS, { keyPath: 'chatId' });
+                    }
+                    if (!db.objectStoreNames.contains(STORE_GEMS)) {
+                        db.createObjectStore(STORE_GEMS, { keyPath: 'gemId' });
+                    }
+                    if (!db.objectStoreNames.contains(STORE_SETTINGS)) {
+                        db.createObjectStore(STORE_SETTINGS, { keyPath: 'key' });
+                    }
+                };
+
+                request.onsuccess = (event) => {
+                    resolve(event.target.result);
+                };
+
+                request.onerror = (event) => {
+                    console.error("IndexedDB error:", event.target.error);
+                    reject(event.target.error);
+                };
             });
         }
 
-        async function saveToDB(storeName, data) {
+        /**
+         * データをIndexedDBに保存する
+         * @param {string} storeName - ストア名
+         * @param {Object} data - 保存するデータ
+         * @returns {Promise<void>}
+         */
+        async function putData(storeName, data) {
             const db = await openDB();
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction([storeName], 'readwrite');
                 const store = transaction.objectStore(storeName);
                 const request = store.put(data);
 
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = (event) => reject(event.target.error);
+                request.onsuccess = () => resolve();
+                request.onerror = (event) => {
+                    console.error('Put error:', event.target.error);
+                    reject(event.target.error);
+                };
             });
         }
 
-        async function getFromDB(storeName, key) {
+        /**
+         * データをIndexedDBから取得する
+         * @param {string} storeName - ストア名
+         * @param {string} key - キー
+         * @returns {Promise<Object>}
+         */
+        async function getData(storeName, key) {
             const db = await openDB();
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction([storeName], 'readonly');
                 const store = transaction.objectStore(storeName);
                 const request = store.get(key);
 
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = (event) => reject(event.target.error);
+                request.onsuccess = (event) => resolve(event.target.result);
+                request.onerror = (event) => {
+                    console.error('Get error:', event.target.error);
+                    reject(event.target.error);
+                };
             });
         }
 
-        async function getAllFromDB(storeName) {
+        /**
+         * ストア内のすべてのデータを取得する
+         * @param {string} storeName - ストア名
+         * @returns {Promise<Array<Object>>}
+         */
+        async function getAllData(storeName) {
             const db = await openDB();
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction([storeName], 'readonly');
                 const store = transaction.objectStore(storeName);
                 const request = store.getAll();
 
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = (event) => reject(event.target.error);
+                request.onsuccess = (event) => resolve(event.target.result);
+                request.onerror = (event) => {
+                    console.error('GetAll error:', event.target.error);
+                    reject(event.target.error);
+                };
             });
         }
 
-        async function deleteFromDB(storeName, key) {
+        /**
+         * データをIndexedDBから削除する
+         * @param {string} storeName - ストア名
+         * @param {string} key - キー
+         * @returns {Promise<void>}
+         */
+        async function deleteData(storeName, key) {
             const db = await openDB();
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction([storeName], 'readwrite');
@@ -318,1085 +416,861 @@
                 const request = store.delete(key);
 
                 request.onsuccess = () => resolve();
-                request.onerror = (event) => reject(event.target.error);
+                request.onerror = (event) => {
+                    console.error('Delete error:', event.target.error);
+                    reject(event.target.error);
+                };
             });
         }
 
-        // --- Global State Management ---
-        const initialAppState = {
-            currentTab: 'home',
-            chats: [], // { id: string, name: string, isGemChat: boolean, gemId?: string, history: [{role: 'user'|'model', text: string}] }
-            gems: [],  // { id: string, name: string, content: string }
-            currentChatId: null,
-            apiKey: '',
-            isLoading: false,
-            message: null, // {type: 'success'|'error', text: string}
-        };
+        // ===============================================
+        // 2. アプリケーションロジック
+        // ===============================================
 
-        const appState = new Proxy(initialAppState, {
-            set(target, property, value) {
-                target[property] = value;
-                // 特定のプロパティの変更時にUIを更新
-                if (['currentTab', 'currentChatId', 'isLoading', 'message'].includes(property)) {
-                    renderApp();
+        /**
+         * タブを切り替える
+         * @param {string} tabId - 切り替えるタブのID (home, chat, history, gem, settings)
+         */
+        async function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+            document.querySelector(`.tab-button[onclick*='${tabId}']`).classList.add('active');
+
+            // タブごとに必要な初期化/更新処理を呼び出す
+            if (tabId === 'history') {
+                await renderHistoryList();
+            } else if (tabId === 'gem') {
+                await renderGemList();
+            } else if (tabId === 'settings') {
+                await loadApiKey();
+            } else if (tabId === 'chat') {
+                if (!currentChatId) {
+                    // チャットが開かれていない場合、チャットウィンドウをリセット
+                    document.getElementById('chat-window').innerHTML = '<div class="status-message">「会話」タブでメッセージを送信するか、「履歴」タブから会話を開いてください。</div>';
+                    document.getElementById('chat-name-input').value = '';
+                    document.getElementById('chat-input').disabled = true;
+                    document.getElementById('chat-send-button').disabled = true;
                 }
-                if (['chats', 'gems', 'apiKey'].includes(property)) {
-                    renderApp(); // 全体再レンダリング
-                }
-                if (property === 'chats' || property === 'gems') {
-                    // カウントの更新
-                    document.getElementById('history-count').textContent = target.chats.length;
-                    document.getElementById('gems-count').textContent = target.gems.length;
-                }
-                return true;
+            }
+        }
+
+        /**
+         * メッセージ送信ボタンのイベントリスナー設定
+         */
+        document.getElementById('home-send-button').addEventListener('click', () => {
+            const input = document.getElementById('home-input').value.trim();
+            if (input) {
+                startNewChat(input);
             }
         });
 
-        // --- Utility Functions ---
-
-        function generateUniqueId() {
-            return 'chat-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9);
-        }
-
-        function showMessage(type, text) {
-            appState.message = { type, text };
-            setTimeout(() => appState.message = null, 3000);
-        }
-
-        // --- Gemini API Handler ---
-
-        async function callGeminiAPI(history, systemInstruction = null) {
-            if (!appState.apiKey) {
-                showMessage('error', '設定タブでAPIキーを入力してください。');
-                return null;
+        document.getElementById('chat-send-button').addEventListener('click', () => {
+            const input = document.getElementById('chat-input').value.trim();
+            if (input) {
+                sendMessage(input);
             }
+        });
 
-            appState.isLoading = true;
-            let responseData = null;
-            const apiKey = appState.apiKey;
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
-            const MAX_RETRIES = 5;
-
-            const contents = history.map(msg => ({
-                role: msg.role === 'user' ? 'user' : 'model',
-                parts: [{ text: msg.text }]
-            }));
-
-            let payload = {
-                contents: contents,
-            };
-
-            // systemInstructionがnullまたは空文字列の場合は含めない
-            if (systemInstruction && systemInstruction.trim() !== "") {
-                payload.systemInstruction = {
-                    parts: [{ text: systemInstruction }]
-                };
+        document.getElementById('chat-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('chat-send-button').click();
             }
-            
-            for (let i = 0; i < MAX_RETRIES; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const errorBody = await response.json();
-                        const errorMessage = errorBody.error?.message || response.statusText;
-                        
-                        // APIキー無効エラーを即座に検出
-                        if (response.status === 400 && errorMessage.includes("API key not valid")) {
-                            throw new Error(`APIエラー: 400 - APIキーが無効です。設定を確認してください。`);
-                        }
-                        throw new Error(`APIエラー: ${response.status} - ${errorMessage}`);
-                    }
-
-                    responseData = await response.json();
-                    break; // 成功
-                } catch (error) {
-                    console.error(`APIコールエラー (試行 ${i + 1}/${MAX_RETRIES}):`, error);
-                    
-                    // APIキー無効エラーの場合は、すぐにループを抜ける
-                    if (error.message.includes("APIキーが無効です")) {
-                        showMessage('error', error.message);
-                        appState.isLoading = false;
-                        return null;
-                    }
-                    
-                    if (i === MAX_RETRIES - 1) {
-                        showMessage('error', `AIからの応答取得に失敗しました: ${error.message}`);
-                        return null;
-                    }
-                    // 指数バックオフ
-                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-
-            appState.isLoading = false;
-
-            const text = responseData?.candidates?.[0]?.content?.parts?.[0]?.text || '応答がありませんでした。';
-            return text;
-        }
-
-        async function callSingleTurnAPI(prompt, systemInstruction = null) {
-            if (!appState.apiKey) {
-                showMessage('error', '設定タブでAPIキーを入力してください。');
-                return null;
-            }
-
-            let responseData = null;
-            const apiKey = appState.apiKey;
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
-            const MAX_RETRIES = 5;
-
-            let payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-            };
-
-            if (systemInstruction && systemInstruction.trim() !== "") {
-                payload.systemInstruction = {
-                    parts: [{ text: systemInstruction }]
-                };
-            }
-            
-            for (let i = 0; i < MAX_RETRIES; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const errorBody = await response.json();
-                        const errorMessage = errorBody.error?.message || response.statusText;
-                        
-                        // APIキー無効エラーを即座に検出
-                        if (response.status === 400 && errorMessage.includes("API key not valid")) {
-                            throw new Error(`APIエラー: 400 - APIキーが無効です。設定を確認してください。`);
-                        }
-                        throw new Error(`APIエラー: ${response.status} - ${errorMessage}`);
-                    }
-
-                    responseData = await response.json();
-                    break;
-                } catch (error) {
-                    console.error(`APIコールエラー (試行 ${i + 1}/${MAX_RETRIES}):`, error);
-
-                    // APIキー無効エラーの場合は、すぐにループを抜ける
-                    if (error.message.includes("APIキーが無効です")) {
-                        showMessage('error', error.message);
-                        return null;
-                    }
-
-                    if (i === MAX_RETRIES - 1) {
-                        showMessage('error', `AIからの応答取得に失敗しました: ${error.message}`);
-                        return null;
-                    }
-                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-
-            return responseData?.candidates?.[0]?.content?.parts?.[0]?.text || null;
-        }
+        });
         
-        // --- LLM Feature Implementations ---
-
-        async function summarizeText(text) {
-            if (!appState.apiKey) {
-                showMessage('error', '設定タブでAPIキーを入力してください。');
-                return;
+        document.getElementById('home-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('home-send-button').click();
             }
+        });
 
-            const prompt = `以下のテキストを、重要なポイントに絞って3〜4行で簡潔に要約してください。:\n\n---\n\n${text}`;
-            
-            appState.isLoading = true;
-            const summary = await callSingleTurnAPI(prompt);
-            appState.isLoading = false;
+        // ===============================================
+        // 3. APIキーと設定
+        // ===============================================
 
-            if (summary) {
-                showModal(`
-                    <div class="modal-content card">
-                        <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">✨ 要約結果</h3>
-                        <p style="white-space: pre-wrap; word-wrap: break-word; color: #333;">${summary}</p>
-                        <div class="flex-container justify-end mt-4">
-                            <button onclick="closeModal()" class="button secondary">閉じる</button>
-                        </div>
-                    </div>
-                `);
-            }
-        }
-        
-        async function generateFollowUpQuestions(currentChatHistory) {
-            if (!appState.apiKey) {
-                showMessage('error', '設定タブでAPIキーを入力してください。');
-                return;
-            }
-            
-            const conversationSnippet = currentChatHistory.slice(-5).map(m => `${m.role === 'user' ? 'ユーザー' : 'AI'}: ${m.text}`).join('\n');
-
-            const systemInstruction = `あなたは会話の専門家です。直前の会話の文脈を考慮し、ユーザーが次に聞く可能性が最も高い関連質問を3つ生成してください。応答は、質問のリストをMarkdown形式で提供してください。例: "* 質問1\n* 質問2\n* 質問3"`;
-            const prompt = `以下の会話の続きとして、ユーザーに提案する質問を3つ生成してください。\n\n---\n${conversationSnippet}`;
-
-            appState.isLoading = true;
-            const questionsRaw = await callSingleTurnAPI(prompt, systemInstruction);
-            appState.isLoading = false;
-
-            if (questionsRaw) {
-                const questions = questionsRaw.split('\n')
-                                            .map(line => line.replace(/^[*-]?\s*/, '').trim())
-                                            .filter(line => line.length > 0);
-                
-                showModal(`
-                    <div class="modal-content card">
-                        <h3 style="font-size: 18px; font-weight: bold; color: #007aff; margin-bottom: 10px;">✨ 次の一手: 関連質問</h3>
-                        <p style="color: #555; margin-bottom: 15px;">会話を深めるために、以下の質問を試してみませんか？</p>
-                        <ul style="list-style: none; padding: 0;">
-                            ${questions.map(q => `
-                                <li style="padding: 10px; background-color: #f0f8ff; border-radius: 4px; margin-bottom: 8px; cursor: pointer; color: #333;" onclick="selectFollowUpQuestion('${q.replace(/'/g, "\\'")}')">
-                                    ▶️ ${q}
-                                </li>
-                            `).join('')}
-                        </ul>
-                        <div class="flex-container justify-end mt-4">
-                            <button onclick="closeModal()" class="button secondary">閉じる</button>
-                        </div>
-                    </div>
-                `);
-            }
-        }
-
-        // --- IndexedDB Initialization and Data Loading ---
-
-        async function loadInitialData() {
+        /**
+         * APIキーをIndexedDBに保存する
+         */
+        async function saveApiKey() {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            const statusEl = document.getElementById('settings-status');
             try {
-                const [chats, gems, settings] = await Promise.all([
-                    getAllFromDB(STORE_CHATS),
-                    getAllFromDB(STORE_GEMS),
-                    getFromDB(STORE_SETTINGS, 'apiKey')
-                ]);
-                appState.chats = chats.sort((a, b) => b.timestamp - a.timestamp); // 最新順
-                appState.gems = gems;
-                appState.apiKey = settings?.value || '';
-
-                if (appState.chats.length > 0 && !appState.currentChatId) {
-                    appState.currentChatId = appState.chats[0].id;
-                }
-                
-                renderApp();
+                await putData(STORE_SETTINGS, { key: 'apiKey', value: apiKey });
+                statusEl.textContent = 'APIキーを保存しました。';
+                statusEl.classList.remove('error-message', 'hidden');
+                console.log('API Key saved.');
             } catch (error) {
-                console.error("データロードエラー:", error);
-                showMessage('error', 'データのロード中にエラーが発生しました。');
-                renderApp();
+                statusEl.textContent = `APIキーの保存に失敗しました: ${error.message}`;
+                statusEl.classList.add('error-message');
+                statusEl.classList.remove('hidden');
+                console.error(error);
             }
         }
 
-        // --- View Rendering Functions ---
-
-        function renderApp() {
-            const content = document.getElementById('app-content');
-            content.innerHTML = '';
-            
-            // ナビゲーションタブの更新
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('tab-active');
-                if (btn.dataset.tab === appState.currentTab) {
-                    btn.classList.add('tab-active');
+        /**
+         * IndexedDBからAPIキーを読み込み、設定タブに表示する
+         */
+        async function loadApiKey() {
+            try {
+                const data = await getData(STORE_SETTINGS, 'apiKey');
+                if (data) {
+                    document.getElementById('api-key-input').value = data.value;
                 }
-            });
-            
-            // コンテンツのレンダリング
-            switch (appState.currentTab) {
-                case 'home':
-                    renderHome(content);
-                    break;
-                case 'chat':
-                    renderChat(content);
-                    break;
-                case 'history':
-                    renderHistory(content);
-                    break;
-                case 'gems':
-                    renderGems(content);
-                    break;
-                case 'settings':
-                    renderSettings(content);
-                    break;
-            }
-            
-            // メッセージ表示の更新
-            const messageEl = document.getElementById('app-message');
-            if (appState.message) {
-                if (!messageEl) {
-                    const msgDiv = document.createElement('div');
-                    msgDiv.id = 'app-message';
-                    msgDiv.className = 'message-box';
-                    document.body.appendChild(msgDiv);
-                }
-                const msgDiv = document.getElementById('app-message');
-                msgDiv.textContent = appState.message.text;
-                msgDiv.className = `message-box ${appState.message.type === 'error' ? 'error' : 'success'}`;
-                msgDiv.style.opacity = 1;
-            } else if (messageEl) {
-                messageEl.style.opacity = 0;
-                // 要素の削除は行わず、非表示にするだけ（シンプルなDOM操作を維持）
+            } catch (error) {
+                console.error('Failed to load API key:', error);
             }
         }
 
-        function handleTabChange(event) {
-            const newTab = event.currentTarget.dataset.tab;
-            appState.currentTab = newTab;
-
-            if (newTab === 'chat' && !appState.currentChatId && appState.chats.length > 0) {
-                appState.currentChatId = appState.chats[0].id;
-            } else if (newTab === 'chat' && appState.chats.length === 0) {
-                appState.currentTab = 'home';
+        /**
+         * APIキーをIndexedDBから取得する
+         * @returns {Promise<string>}
+         */
+        async function getApiKey() {
+            try {
+                const data = await getData(STORE_SETTINGS, 'apiKey');
+                return data ? data.value : '';
+            } catch (error) {
+                console.error('Error fetching API key:', error);
+                return '';
             }
         }
-        
-        // --- Tab Content Renderers ---
 
-        function renderHome(container) {
-            const isApiReady = !!appState.apiKey;
 
-            container.style.display = 'flex';
-            container.style.flexDirection = 'column';
-            container.style.justifyContent = 'center';
-            container.style.alignItems = 'center';
-            container.style.textAlign = 'center';
-            container.innerHTML = `
-                <div class="card" style="width: 100%; max-width: 450px;">
-                    <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #333;">新しい会話を始める</h2>
-                    ${!isApiReady ? `
-                        <div style="padding: 10px; margin-bottom: 15px; background-color: #fffbe6; border-left: 4px solid #ffc107; color: #856404; border-radius: 4px; text-align: left;">
-                            <p class="font-bold">⚠️ APIキーが必要です</p>
-                            <p class="text-sm">「⚙️ 設定」タブで有効なGemini APIキーを入力してください。</p>
-                        </div>
-                    ` : ''}
-                    <form id="home-chat-form" style="display: flex; flex-direction: column;">
-                        <textarea id="home-prompt" rows="4" placeholder="AIに話しかけてください..." 
-                            class="input-area mb-4" required></textarea>
-                        <button type="submit" class="button" ${appState.isLoading || !isApiReady ? 'disabled' : ''}>
-                            ${appState.isLoading ? `
-                                🔄 処理中...
-                            ` : `
-                                🚀 会話を開始
-                            `}
-                        </button>
-                    </form>
-                </div>
-            `;
-            
-            document.getElementById('home-chat-form').addEventListener('submit', handleHomeSubmit);
-        }
+        // ===============================================
+        // 4. Gemini API通信
+        // ===============================================
 
-        async function handleHomeSubmit(event) {
-            event.preventDefault();
-            const prompt = document.getElementById('home-prompt').value.trim();
-            if (!prompt || !appState.apiKey) return;
+        /**
+         * Gemini APIを呼び出す
+         * @param {Array<Object>} history - 過去の会話履歴 (contents形式)
+         * @param {Object|null} gem - 使用するGem (systemInstruction)
+         * @returns {Promise<string>} - Geminiの返答テキスト
+         */
+        async function callGemini(history, gem) {
+            const apiKey = await getApiKey();
+            if (!apiKey) {
+                throw new Error("APIキーが設定されていません。「設定」タブで入力・保存してください。");
+            }
 
-            const newChatId = generateUniqueId();
-            const initialChat = {
-                id: newChatId,
-                name: prompt.substring(0, 30) + (prompt.length > 30 ? '...' : ''),
-                isGemChat: false,
-                timestamp: Date.now(),
-                history: []
+            // 最後の要素をユーザープロンプトとして使用し、それ以前を履歴として使用
+            const userQuery = history[history.length - 1].parts[0].text;
+            const chatHistory = history.slice(0, history.length - 1);
+
+            const systemInstruction = gem ? gem.systemInstruction : undefined;
+
+            const payload = {
+                contents: history,
+                systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined,
             };
 
-            appState.chats = [initialChat].concat(appState.chats);
-            appState.currentChatId = newChatId;
-            appState.currentTab = 'chat';
+            const MAX_RETRIES = 5;
+            for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+                try {
+                    const response = await fetch(`${API_URL}?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
 
-            await saveToDB(STORE_CHATS, initialChat);
-            
-            await handleChatSubmit(newChatId, prompt);
-        }
-
-        function renderChat(container) {
-            const currentChat = appState.chats.find(c => c.id === appState.currentChatId);
-            const isApiReady = !!appState.apiKey;
-
-            if (!currentChat) {
-                container.innerHTML = `
-                    <div class="flex-grow flex-col flex-center" style="align-items: center; justify-content: center; text-align: center;">
-                        <p style="color: #555; font-size: 16px;">会話が選択されていません。ホームから新しいチャットを開始するか、履歴から選択してください。</p>
-                        <button onclick="appState.currentTab='home'" class="button mt-4">ホームに戻る</button>
-                    </div>
-                `;
-                return;
-            }
-
-            const gem = currentChat.isGemChat ? appState.gems.find(g => g.id === currentChat.gemId) : null;
-            const chatName = gem ? `[💎 ${gem.name}] ${currentChat.name}` : currentChat.name;
-
-            container.style.display = 'flex';
-            container.style.flexDirection = 'column';
-            container.className = 'flex-grow card';
-            container.innerHTML = `
-                <div class="flex-container justify-between" style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
-                    <h2 style="font-size: 18px; font-weight: bold; color: #333; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 70%;">${chatName}</h2>
-                    <div class="flex-container">
-                        <button onclick="generateFollowUpQuestions(appState.chats.find(c => c.id === appState.currentChatId).history)" 
-                                style="font-size: 18px; border: none; background: none; cursor: pointer; color: #ff9800;" 
-                                title="次に聞く質問を提案" ${!isApiReady ? 'disabled' : ''}>
-                            ✨
-                        </button>
-                        <button id="rename-chat-btn" style="font-size: 18px; border: none; background: none; cursor: pointer; color: #555;" title="会話名を変更">
-                            ✏️
-                        </button>
-                    </div>
-                </div>
-
-                <!-- メッセージ表示エリア -->
-                <div id="messages-container" class="flex-grow" style="overflow-y: auto; padding-right: 5px;">
-                    <!-- メッセージはJSで挿入 -->
-                </div>
-                
-                <!-- 入力フォーム -->
-                ${!isApiReady ? `
-                    <div style="padding: 10px; margin-top: 10px; background-color: #ffebee; border-left: 4px solid #f44336; color: #c62828; border-radius: 4px;">
-                        <p class="font-bold">🚫 APIキーが無効です</p>
-                        <p class="text-sm">チャットを送信できません。</p>
-                    </div>
-                ` : ''}
-                <form id="chat-form" class="flex-container" style="margin-top: 10px;">
-                    <textarea id="chat-prompt" rows="1" placeholder="メッセージを入力..." 
-                        class="input-area flex-grow" required></textarea>
-                    <button type="submit" class="button" style="width: 80px; margin-left: 10px;" ${appState.isLoading || !isApiReady ? 'disabled' : ''}>
-                        ${appState.isLoading ? `
-                            ⏳
-                        ` : `
-                            ➡️ 送信
-                        `}
-                    </button>
-                </form>
-            `;
-
-            // メッセージのレンダリング
-            const messagesContainer = document.getElementById('messages-container');
-            currentChat.history.forEach((msg, index) => {
-                const isAI = msg.role === 'model';
-                const messageEl = document.createElement('div');
-                messageEl.className = `flex-container ${isAI ? 'justify-start' : 'justify-end'}`;
-                
-                // メッセージ内容
-                const contentDiv = document.createElement('div');
-                contentDiv.className = isAI ? 'message-ai' : 'message-user';
-                contentDiv.innerHTML = msg.text.replace(/\n/g, '<br>');
-
-                messageEl.appendChild(contentDiv);
-
-                // AIメッセージのみアクションボタンを追加
-                if (isAI) {
-                    const actionsDiv = document.createElement('div');
-                    actionsDiv.className = 'flex-container justify-end'
-                    actionsDiv.style.marginTop = '5px';
-                    actionsDiv.style.fontSize = '12px';
-
-                    const summaryBtn = document.createElement('button');
-                    summaryBtn.textContent = '✨ 要約';
-                    summaryBtn.className = 'action-link';
-                    summaryBtn.title = 'AIの応答を要約';
-                    summaryBtn.onclick = function() { summarizeText(msg.text); };
-                    summaryBtn.disabled = !isApiReady;
-                    contentDiv.appendChild(summaryBtn);
-                    
-                    const copyBtn = document.createElement('button');
-                    copyBtn.textContent = '📋 コピー';
-                    copyBtn.className = 'action-link';
-                    copyBtn.title = 'コピー';
-                    copyBtn.onclick = function() { copyResponse(msg.text); };
-                    contentDiv.appendChild(copyBtn);
-                    
-                    const shareBtn = document.createElement('button');
-                    shareBtn.textContent = '📤 共有';
-                    shareBtn.className = 'action-link';
-                    shareBtn.title = '共有';
-                    shareBtn.onclick = function() { shareResponse(msg.text); };
-                    contentDiv.appendChild(shareBtn);
-                }
-                
-                messagesContainer.appendChild(messageEl);
-            });
-
-            // メッセージコンテナを一番下までスクロール
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            // イベントリスナーの設定
-            if (isApiReady) {
-                document.getElementById('chat-form').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const prompt = document.getElementById('chat-prompt').value.trim();
-                    document.getElementById('chat-prompt').value = '';
-                    if (prompt) handleChatSubmit(currentChat.id, prompt, gem?.content);
-                });
-            }
-            
-            document.getElementById('rename-chat-btn').addEventListener('click', () => showRenameModal(currentChat));
-
-            // textareaの自動高さ調整
-            const textarea = document.getElementById('chat-prompt');
-            textarea.addEventListener('input', () => {
-                textarea.style.height = 'auto';
-                textarea.style.height = (textarea.scrollHeight) + 'px';
-            });
-            textarea.dispatchEvent(new Event('input')); // 初期ロード時に一度実行
-        }
-        
-        function selectFollowUpQuestion(question) {
-            const textarea = document.getElementById('chat-prompt');
-            if (textarea) {
-                textarea.value = question;
-                textarea.focus();
-                textarea.dispatchEvent(new Event('input')); // 高さ調整をトリガー
-                closeModal();
-            }
-        }
-
-        function showRenameModal(chat) {
-            const modalContent = `
-                <div class="modal-content card">
-                    <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">会話名の変更</h3>
-                    <input type="text" id="new-chat-name" class="input-area mb-4" value="${chat.name}">
-                    <div class="flex-container justify-end">
-                        <button onclick="closeModal()" class="button secondary" style="margin-right: 10px;">キャンセル</button>
-                        <button id="confirm-rename-btn" class="button">変更</button>
-                    </div>
-                </div>
-            `;
-            showModal(modalContent);
-
-            document.getElementById('confirm-rename-btn').addEventListener('click', async () => {
-                const newName = document.getElementById('new-chat-name').value.trim();
-                if (newName && newName !== chat.name) {
-                    chat.name = newName;
-                    await saveChat(chat);
-                    appState.chats = [].concat(appState.chats); // UI更新のために状態をトリガー
-                    closeModal();
-                    showMessage('success', '会話名を変更しました。');
-                } else {
-                    closeModal();
-                }
-            });
-        }
-
-        async function handleChatSubmit(chatId, prompt, gemContent = null) {
-            const currentChatIndex = appState.chats.findIndex(c => c.id === chatId);
-            if (currentChatIndex === -1 || !appState.apiKey) return;
-
-            const chat = appState.chats[currentChatIndex];
-            
-            const userMessage = { role: 'user', text: prompt };
-            chat.history.push(userMessage);
-            
-            appState.chats = [].concat(appState.chats);
-            
-            const aiResponse = await callGeminiAPI(chat.history, gemContent);
-
-            if (aiResponse) {
-                const aiMessage = { role: 'model', text: aiResponse };
-                chat.history.push(aiMessage);
-                chat.timestamp = Date.now();
-                
-                // 履歴タブの順序を修正してUIを更新
-                appState.chats.splice(currentChatIndex, 1);
-                appState.chats = [chat].concat(appState.chats);
-
-                await saveChat(chat);
-            }
-        }
-
-        function copyResponse(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                // execCommandは古いブラウザでも動作するが、非推奨。iOS 10では必要。
-                const successful = document.execCommand('copy'); 
-                showMessage('success', successful ? '回答をクリップボードにコピーしました。' : 'コピーに失敗しました。');
-            } catch (err) {
-                showMessage('error', 'コピーに失敗しました。');
-            }
-            document.body.removeChild(textarea);
-        }
-
-        function shareResponse(text) {
-            // navigator.shareはiOS 10ではサポートされていない可能性が高いため、コピーを代替とする
-            if (navigator.share) {
-                navigator.share({
-                    title: 'GemAIからの回答',
-                    text: text,
-                }).then(() => {
-                    showMessage('success', '回答を共有しました。');
-                }).catch((error) => {
-                    if (error.name !== 'AbortError') {
-                        copyResponse(text); // 共有失敗時はコピーを試みる
-                        showMessage('error', '共有に失敗しました。クリップボードにコピーしました。');
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                        throw new Error(`APIリクエストが失敗しました。ステータス: ${response.status}, 詳細: ${errorBody}`);
                     }
-                });
-            } else {
-                copyResponse(text);
-                showMessage('error', '共有機能がないため、クリップボードにコピーしました。');
-            }
-        }
 
-        async function saveChat(chat) {
-            try {
-                await saveToDB(STORE_CHATS, chat);
-            } catch (e) {
-                console.error("チャット保存エラー:", e);
-                showMessage('error', 'チャット履歴の保存に失敗しました。');
-            }
-        }
+                    const result = await response.json();
+                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
-
-        function renderHistory(container) {
-            container.style.display = 'flex';
-            container.style.flexDirection = 'column';
-            container.className = 'flex-grow card';
-            container.innerHTML = `
-                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #333;">📜 会話履歴</h2>
-                <div id="history-list" class="flex-col" style="flex-grow: 1; overflow-y: auto;">
-                    ${appState.chats.length === 0 
-                        ? '<p style="color: #555;">保存された会話はありません。</p>' 
-                        : appState.chats.map(chat => {
-                            const date = new Date(chat.timestamp).toLocaleDateString('ja-JP', { day: '2-digit', month: '2-digit' });
-                            const time = new Date(chat.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
-                            const isSelected = chat.id === appState.currentChatId;
-                            const gemLabel = chat.isGemChat ? `<span style="font-size: 11px; color: #8a2be2; font-weight: bold; margin-left: 5px;">(💎 ${appState.gems.find(g => g.id === chat.gemId)?.name || 'カスタム'})</span>` : '';
-                            
-                            return `
-                                <div id="history-item-${chat.id}" 
-                                     class="card flex-container justify-between"
-                                     style="padding: 10px; margin-bottom: 8px; cursor: pointer; border: 1px solid ${isSelected ? '#007aff' : '#eee'};"
-                                     onclick="loadChat('${chat.id}')">
-                                    <div style="overflow: hidden; flex-grow: 1; margin-right: 10px;">
-                                        <p class="font-bold truncate" style="color: #333;">${chat.name} ${gemLabel}</p>
-                                        <p class="text-sm" style="color: #888;">${date} ${time}</p>
-                                    </div>
-                                    <div class="flex-container">
-                                        <button onclick="event.stopPropagation(); showRenameModal(appState.chats.find(c => c.id === '${chat.id}'))" 
-                                                style="font-size: 18px; border: none; background: none; cursor: pointer; color: #007aff; padding: 5px;" title="名前変更">
-                                            ✏️
-                                        </button>
-                                        <button onclick="event.stopPropagation(); showDeleteChatModal('${chat.id}')" 
-                                                style="font-size: 18px; border: none; background: none; cursor: pointer; color: #ff3b30; padding: 5px;" title="削除">
-                                            🗑️
-                                        </button>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')
+                    if (!text) {
+                        throw new Error("AIからの返答が空です。プロンプトを見直すか、Gemini APIキーを確認してください。");
                     }
-                </div>
-            `;
-        }
+                    return text;
 
-        function loadChat(chatId) {
-            appState.currentChatId = chatId;
-            appState.currentTab = 'chat';
-        }
-
-        function showDeleteChatModal(chatId) {
-            const chat = appState.chats.find(c => c.id === chatId);
-            if (!chat) return;
-
-            const modalContent = `
-                <div class="modal-content card">
-                    <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #ff3b30;">🗑️ 会話の削除</h3>
-                    <p style="margin-bottom: 15px;">本当に以下の会話を削除しますか？</p>
-                    <p class="font-bold truncate" style="color: #333; margin-bottom: 15px;">${chat.name}</p>
-                    <div class="flex-container justify-end">
-                        <button onclick="closeModal()" class="button secondary" style="margin-right: 10px;">キャンセル</button>
-                        <button id="confirm-delete-chat-btn" data-chat-id="${chatId}" class="button" style="background-color: #ff3b30;">削除</button>
-                    </div>
-                </div>
-            `;
-            showModal(modalContent);
-
-            document.getElementById('confirm-delete-chat-btn').addEventListener('click', async (e) => {
-                const id = e.target.dataset.chatId;
-                await deleteChat(id);
-                closeModal();
-            });
-        }
-
-        async function deleteChat(chatId) {
-            try {
-                await deleteFromDB(STORE_CHATS, chatId);
-                appState.chats = appState.chats.filter(c => c.id !== chatId);
-
-                if (appState.currentChatId === chatId) {
-                    appState.currentChatId = appState.chats.length > 0 ? appState.chats[0].id : null;
+                } catch (error) {
+                    if (attempt < MAX_RETRIES - 1) {
+                        const delay = Math.pow(2, attempt) * 1000 + Math.random() * 1000;
+                        console.warn(`API呼び出し失敗 (試行 ${attempt + 1}/${MAX_RETRIES})。${(delay / 1000).toFixed(1)}秒後に再試行します...`, error);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    } else {
+                        throw error;
+                    }
                 }
-                showMessage('success', '会話を削除しました。');
-            } catch (e) {
-                console.error("チャット削除エラー:", e);
-                showMessage('error', '会話の削除に失敗しました。');
             }
         }
 
-        function renderGems(container) {
-            container.style.display = 'flex';
-            container.style.flexDirection = 'column';
-            container.className = 'flex-grow card';
-            container.innerHTML = `
-                <h2 style="font-size: 20px; font-weight: bold; color: #333; margin-bottom: 15px;">💎 カスタムGemの管理</h2>
-                
-                <!-- Gemリスト -->
-                <div id="gems-list" style="flex-grow: 1; overflow-y: auto;">
-                    ${appState.gems.length === 0 
-                        ? '<p style="color: #555;">カスタムGemはまだ作成されていません。</p>' 
-                        : appState.gems.map(gem => `
-                            <div class="card" style="padding: 10px; margin-bottom: 8px;">
-                                <div class="flex-container justify-between" style="align-items: flex-start;">
-                                    <div style="overflow: hidden; flex-grow: 1; margin-right: 10px;">
-                                        <p class="font-bold" style="color: #333; margin-bottom: 5px; cursor: pointer;" onclick="startGemChat('${gem.id}')">
-                                            💎 ${gem.name}
-                                        </p>
-                                        <p class="text-sm" style="color: #888; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${gem.content}</p>
-                                    </div>
-                                    <div class="flex-container">
-                                        <button onclick="showEditGemModal('${gem.id}')" 
-                                                style="font-size: 18px; border: none; background: none; cursor: pointer; color: #007aff; padding: 5px;" title="編集">
-                                            ✏️
-                                        </button>
-                                        <button onclick="showDeleteGemModal('${gem.id}')" 
-                                                style="font-size: 18px; border: none; background: none; cursor: pointer; color: #ff3b30; padding: 5px;" title="削除">
-                                            🗑️
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')
-                    }
-                </div>
+        // ===============================================
+        // 5. 会話 (チャット) ロジック
+        // ===============================================
 
-                <!-- 新規Gem作成ボタン -->
-                <button onclick="showCreateGemModal()" class="button mt-4">
-                    ➕ 新しいGemを作成
-                </button>
-            `;
-        }
-        
-        function showCreateGemModal(gemToEdit = null) {
-            const isEdit = !!gemToEdit;
-            const modalContent = `
-                <div class="modal-content card" style="max-width: 500px;">
-                    <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">${isEdit ? 'Gemの編集' : '新しいGemを作成'}</h3>
-                    <form id="gem-form" data-gem-id="${isEdit ? gemToEdit.id : ''}">
-                        <div style="margin-bottom: 15px;">
-                            <label for="gem-name" style="display: block; font-size: 14px; color: #555; margin-bottom: 5px;">Gem名 (例: 専門のシェフ)</label>
-                            <input type="text" id="gem-name" class="input-area" value="${isEdit ? gemToEdit.name : ''}" required>
-                        </div>
-                        <div style="margin-bottom: 20px;">
-                            <label for="gem-content" style="display: block; font-size: 14px; color: #555; margin-bottom: 5px;">Gemの内容 (システム命令)</label>
-                            <textarea id="gem-content" rows="5" placeholder="例: あなたは、世界中の料理に精通したユーモアのある専門のシェフです..." 
-                                class="input-area" required>${isEdit ? gemToEdit.content : ''}</textarea>
-                        </div>
-                        <div class="flex-container justify-end">
-                            <button type="button" onclick="closeModal()" class="button secondary" style="margin-right: 10px;">キャンセル</button>
-                            <button type="submit" class="button">${isEdit ? '更新' : '作成'}</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            showModal(modalContent);
-            document.getElementById('gem-form').addEventListener('submit', handleGemSubmit);
-        }
-
-        function showEditGemModal(gemId) {
-            const gem = appState.gems.find(g => g.id === gemId);
-            if (gem) showCreateGemModal(gem);
-        }
-
-        async function handleGemSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const gemId = form.dataset.gemId;
-            const name = document.getElementById('gem-name').value.trim();
-            const content = document.getElementById('gem-content').value.trim();
-
-            if (!name || !content) return;
+        /**
+         * 新しいチャットを開始し、最初のメッセージを送信する
+         * @param {string} initialMessage - 最初のメッセージ
+         * @param {string|null} gemId - 使用するGemのID (ホームからの開始時のみnull)
+         */
+        async function startNewChat(initialMessage, gemId = null) {
+            currentChatId = crypto.randomUUID();
+            currentGem = null;
+            let chatName = initialMessage.substring(0, 30) + (initialMessage.length > 30 ? '...' : '');
+            let gemStatusText = '通常チャット';
 
             if (gemId) {
-                const gem = appState.gems.find(g => g.id === gemId);
+                const gem = await getData(STORE_GEMS, gemId);
                 if (gem) {
-                    gem.name = name;
-                    gem.content = content;
-                    await saveToDB(STORE_GEMS, gem);
-                    appState.gems = [].concat(appState.gems);
-                    showMessage('success', 'Gemを更新しました。');
+                    currentGem = gem;
+                    chatName = `[${gem.name}] ${chatName}`;
+                    gemStatusText = `Gem使用: ${gem.name}`;
                 }
-            } else {
-                const newGem = {
-                    id: generateUniqueId(),
-                    name: name,
-                    content: content
-                };
-                await saveToDB(STORE_GEMS, newGem);
-                appState.gems = [newGem].concat(appState.gems);
-                showMessage('success', '新しいGemを作成しました。');
             }
 
-            closeModal();
-        }
+            const newChat = {
+                chatId: currentChatId,
+                name: chatName,
+                messages: [{ role: 'user', parts: [{ text: initialMessage }] }],
+                timestamp: Date.now(),
+                gemId: gemId,
+            };
 
-        function showDeleteGemModal(gemId) {
-            const gem = appState.gems.find(g => g.id === gemId);
-            if (!gem) return;
+            await putData(STORE_CHATS, newChat);
 
-            const modalContent = `
-                <div class="modal-content card">
-                    <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #ff3b30;">🗑️ Gemの削除</h3>
-                    <p style="margin-bottom: 15px;">本当にGem「${gem.name}」を削除しますか？</p>
-                    <div class="flex-container justify-end">
-                        <button onclick="closeModal()" class="button secondary" style="margin-right: 10px;">キャンセル</button>
-                        <button id="confirm-delete-gem-btn" data-gem-id="${gemId}" class="button" style="background-color: #ff3b30;">削除</button>
-                    </div>
-                </div>
-            `;
-            showModal(modalContent);
+            // UI更新
+            switchTab('chat');
+            document.getElementById('home-input').value = '';
+            document.getElementById('home-gem-status').classList.add('hidden');
+            document.getElementById('chat-name-input').value = newChat.name;
+            document.getElementById('chat-window').innerHTML = '';
+            document.getElementById('chat-input').disabled = false;
+            document.getElementById('chat-send-button').disabled = false;
 
-            document.getElementById('confirm-delete-gem-btn').addEventListener('click', async (e) => {
-                const id = e.target.dataset.gemId;
-                await deleteGem(id);
-                closeModal();
-            });
-        }
+            // 最初のメッセージをUIに追加
+            displayMessage({ role: 'user', parts: [{ text: initialMessage }] });
 
-        async function deleteGem(gemId) {
+            // AI応答を取得
+            const chatInputEl = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-button');
+
+            chatInputEl.disabled = true;
+            chatSendBtn.disabled = true;
+            displayLoadingMessage();
+
             try {
-                await deleteFromDB(STORE_GEMS, gemId);
-                appState.gems = appState.gems.filter(g => g.id !== gemId);
-                showMessage('success', 'Gemを削除しました。');
-            } catch (e) {
-                console.error("Gem削除エラー:", e);
-                showMessage('error', 'Gemの削除に失敗しました。');
+                const geminiText = await callGemini(newChat.messages, currentGem);
+                
+                // ローディングメッセージを削除し、AI応答を表示
+                removeLoadingMessage();
+                displayMessage({ role: 'model', parts: [{ text: geminiText }] });
+
+                // 履歴を更新
+                newChat.messages.push({ role: 'model', parts: [{ text: geminiText }] });
+                await putData(STORE_CHATS, newChat);
+
+            } catch (error) {
+                removeLoadingMessage();
+                displayErrorMessage(error.message);
+                console.error(error);
+            } finally {
+                chatInputEl.disabled = false;
+                chatSendBtn.disabled = false;
+                chatInputEl.focus();
             }
         }
 
-        function startGemChat(gemId) {
-            const gem = appState.gems.find(g => g.id === gemId);
-            if (!gem || !appState.apiKey) {
-                showMessage('error', 'APIキーが設定されていないため、Gemとの会話を開始できません。');
+        /**
+         * 既存の会話を開く
+         * @param {string} chatId - 開く会話のID
+         */
+        async function openChat(chatId) {
+            currentChatId = chatId;
+            currentGem = null;
+            switchTab('chat');
+
+            try {
+                const chat = await getData(STORE_CHATS, chatId);
+                if (!chat) throw new Error('会話が見つかりません。');
+
+                document.getElementById('chat-name-input').value = chat.name;
+                document.getElementById('chat-window').innerHTML = '';
+                document.getElementById('chat-input').disabled = false;
+                document.getElementById('chat-send-button').disabled = false;
+
+                // Gemが使用されている場合は設定
+                if (chat.gemId) {
+                    const gem = await getData(STORE_GEMS, chat.gemId);
+                    if (gem) currentGem = gem;
+                }
+
+                // メッセージ表示
+                chat.messages.forEach(displayMessage);
+
+                // スクロールを一番下へ
+                const chatWindow = document.getElementById('chat-window');
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            } catch (error) {
+                displayErrorMessage(`会話を開けませんでした: ${error.message}`);
+                currentChatId = null;
+            }
+        }
+
+        /**
+         * 現在のチャットにメッセージを送信し、応答を取得・表示する
+         * @param {string} message - ユーザーメッセージ
+         */
+        async function sendMessage(message) {
+            if (!currentChatId) return;
+
+            const chatInputEl = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-button');
+
+            // UIを無効化
+            chatInputEl.value = '';
+            chatInputEl.disabled = true;
+            chatSendBtn.disabled = true;
+
+            // メッセージをUIに追加
+            const userMessage = { role: 'user', parts: [{ text: message }] };
+            displayMessage(userMessage);
+            displayLoadingMessage();
+
+            try {
+                const chat = await getData(STORE_CHATS, currentChatId);
+                if (!chat) throw new Error('現在の会話データが見つかりません。');
+                
+                // 履歴にユーザーメッセージを追加 (APIに送信するため)
+                chat.messages.push(userMessage);
+
+                // AI応答を取得
+                const geminiText = await callGemini(chat.messages, currentGem);
+
+                // ローディングメッセージを削除し、AI応答を表示
+                removeLoadingMessage();
+                const geminiMessage = { role: 'model', parts: [{ text: geminiText }] };
+                displayMessage(geminiMessage);
+
+                // 履歴を更新
+                chat.messages.push(geminiMessage);
+                await putData(STORE_CHATS, chat);
+
+            } catch (error) {
+                removeLoadingMessage();
+                displayErrorMessage(error.message);
+                console.error(error);
+            } finally {
+                chatInputEl.disabled = false;
+                chatSendBtn.disabled = false;
+                chatInputEl.focus();
+            }
+        }
+
+        /**
+         * チャット名が変更されたときにIndexedDBを更新する
+         */
+        async function updateChatName() {
+            if (!currentChatId) return;
+            const newName = document.getElementById('chat-name-input').value.trim();
+            if (!newName) return;
+
+            try {
+                const chat = await getData(STORE_CHATS, currentChatId);
+                if (chat) {
+                    chat.name = newName;
+                    await putData(STORE_CHATS, chat);
+                    // 履歴リストの更新が必要だが、ここではシンプルにコンソールにログ
+                    console.log(`Chat ${currentChatId} name updated to: ${newName}`);
+                }
+            } catch (error) {
+                console.error('Failed to update chat name:', error);
+            }
+        }
+
+        /**
+         * 現在開いているチャットを削除する
+         */
+        async function deleteCurrentChat() {
+            if (!currentChatId) return;
+
+            if (!window.confirm("この会話を完全に削除してもよろしいですか？")) return;
+
+            try {
+                await deleteData(STORE_CHATS, currentChatId);
+                currentChatId = null;
+                currentGem = null;
+                switchTab('history'); // 履歴タブに移動
+                console.log('Chat deleted.');
+            } catch (error) {
+                console.error('Failed to delete chat:', error);
+                alert('会話の削除に失敗しました。');
+            }
+        }
+
+        // ===============================================
+        // 6. UI レンダリング (チャット)
+        // ===============================================
+
+        /**
+         * メッセージをチャットウィンドウに表示する
+         * @param {Object} message - { role: 'user'|'model', parts: [{ text: string }] }
+         */
+        function displayMessage(message) {
+            const chatWindow = document.getElementById('chat-window');
+            const messageEl = document.createElement('div');
+            messageEl.classList.add('message');
+            messageEl.classList.add(message.role === 'user' ? 'user-message' : 'gemini-message');
+
+            const text = message.parts[0].text.replace(/\n/g, '<br>');
+            const textContent = document.createElement('div');
+            textContent.innerHTML = text;
+            messageEl.appendChild(textContent);
+
+            if (message.role === 'model') {
+                const actions = document.createElement('div');
+                actions.classList.add('message-actions');
+
+                // コピーボタン
+                const copyBtn = document.createElement('button');
+                copyBtn.classList.add('action-button');
+                copyBtn.textContent = 'コピー';
+                copyBtn.onclick = () => copyToClipboard(message.parts[0].text, copyBtn);
+                actions.appendChild(copyBtn);
+
+                // 共有ボタン (簡易的な機能、ここではテキストをコピー)
+                const shareBtn = document.createElement('button');
+                shareBtn.classList.add('action-button');
+                shareBtn.textContent = '共有 (コピー)';
+                shareBtn.onclick = () => copyToClipboard(message.parts[0].text, shareBtn);
+                actions.appendChild(shareBtn);
+
+                messageEl.appendChild(actions);
+            }
+
+            chatWindow.appendChild(messageEl);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        /**
+         * ローディングメッセージ (Geminiからの応答待ち) を表示する
+         */
+        function displayLoadingMessage() {
+            const chatWindow = document.getElementById('chat-window');
+            const loadingEl = document.createElement('div');
+            loadingEl.id = 'loading-message';
+            loadingEl.classList.add('gemini-message', 'message');
+            loadingEl.textContent = 'AIが応答中...';
+            chatWindow.appendChild(loadingEl);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        /**
+         * ローディングメッセージを削除する
+         */
+        function removeLoadingMessage() {
+            const loadingEl = document.getElementById('loading-message');
+            if (loadingEl) {
+                loadingEl.remove();
+            }
+        }
+
+        /**
+         * エラーメッセージをチャットウィンドウに表示する
+         * @param {string} message - エラーメッセージ
+         */
+        function displayErrorMessage(message) {
+            const chatWindow = document.getElementById('chat-window');
+            const errorEl = document.createElement('div');
+            errorEl.classList.add('status-message', 'error-message');
+            errorEl.innerHTML = `<strong>エラー:</strong> ${message}`;
+            chatWindow.appendChild(errorEl);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        /**
+         * テキストをクリップボードにコピーする
+         * @param {string} text - コピーするテキスト
+         * @param {HTMLElement} buttonEl - クリックされたボタン要素
+         */
+        function copyToClipboard(text, buttonEl) {
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            
+            try {
+                // document.execCommand('copy') は古いブラウザでも動作する代替手段
+                const successful = document.execCommand('copy');
+                const originalText = buttonEl.textContent;
+                buttonEl.textContent = successful ? 'コピーしました！' : 'コピー失敗';
+
+                setTimeout(() => {
+                    buttonEl.textContent = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Copy failed:', err);
+                buttonEl.textContent = 'コピー失敗';
+            }
+            
+            document.body.removeChild(tempTextarea);
+        }
+
+        // ===============================================
+        // 7. 履歴タブのロジック
+        // ===============================================
+
+        /**
+         * 履歴リストをレンダリングする
+         */
+        async function renderHistoryList() {
+            const listEl = document.getElementById('history-list');
+            listEl.innerHTML = '';
+            try {
+                const chats = await getAllData(STORE_CHATS);
+                if (chats.length === 0) {
+                    listEl.innerHTML = '<p>履歴がありません。</p>';
+                    return;
+                }
+
+                // タイムスタンプで降順ソート
+                chats.sort((a, b) => b.timestamp - a.timestamp);
+
+                chats.forEach(chat => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('list-item');
+                    itemEl.onclick = () => openChat(chat.chatId);
+
+                    const nameEl = document.createElement('span');
+                    const gemTag = chat.gemId ? ` <small style="color:#007bff;">[Gem使用]</small>` : '';
+                    nameEl.innerHTML = `${chat.name}${gemTag}`;
+                    nameEl.classList.add('list-item-name');
+
+                    const timestampEl = document.createElement('small');
+                    timestampEl.textContent = new Date(chat.timestamp).toLocaleString();
+                    timestampEl.style.marginLeft = '10px';
+                    
+                    const actionsEl = document.createElement('div');
+                    actionsEl.classList.add('list-actions');
+
+                    // 削除ボタン
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '削除';
+                    deleteBtn.style.backgroundColor = '#dc3545';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation(); // 親要素のopenChatを防止
+                        deleteChat(chat.chatId);
+                    };
+                    actionsEl.appendChild(deleteBtn);
+
+                    itemEl.appendChild(nameEl);
+                    itemEl.appendChild(timestampEl);
+                    itemEl.appendChild(actionsEl);
+                    listEl.appendChild(itemEl);
+                });
+            } catch (error) {
+                listEl.innerHTML = `<p class="error-message">履歴の読み込みに失敗しました: ${error.message}</p>`;
+                console.error('Failed to render history:', error);
+            }
+        }
+
+        /**
+         * 指定されたチャットを削除する
+         * @param {string} chatId - 削除するチャットのID
+         */
+        async function deleteChat(chatId) {
+            if (!window.confirm("この会話を完全に削除してもよろしいですか？")) return;
+
+            try {
+                await deleteData(STORE_CHATS, chatId);
+                await renderHistoryList(); // リストを再レンダリング
+                console.log(`Chat ${chatId} deleted.`);
+            } catch (error) {
+                console.error('Failed to delete chat:', error);
+                alert('会話の削除に失敗しました。');
+            }
+        }
+
+        // ===============================================
+        // 8. Gemタブのロジック
+        // ===============================================
+
+        /**
+         * Gemを保存・更新する
+         */
+        async function saveGem() {
+            const id = document.getElementById('gem-id-input').value.trim();
+            const name = document.getElementById('gem-name-input').value.trim();
+            const instruction = document.getElementById('gem-instruction-input').value.trim();
+
+            if (!name || !instruction) {
+                alert('Gem名とインストラクションは必須です。');
                 return;
             }
 
-            const modalContent = `
-                <div class="modal-content card" style="max-width: 500px;">
-                    <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">💎 Gem「${gem.name}」との会話開始</h3>
-                    <p style="color: #555; margin-bottom: 10px;">最初のメッセージを入力してください。AIは以下のペルソナに従います:</p>
-                    <div style="padding: 10px; background-color: #f5f5f5; border-radius: 4px; margin-bottom: 15px; font-size: 13px; color: #444; max-height: 80px; overflow-y: auto;">${gem.content}</div>
-                    <form id="start-gem-chat-form" data-gem-id="${gem.id}">
-                        <textarea id="gem-initial-prompt" rows="3" placeholder="最初の質問や挨拶を入力..." 
-                            class="input-area" required></textarea>
-                        <div class="flex-container justify-end mt-4">
-                            <button type="button" onclick="closeModal()" class="button secondary" style="margin-right: 10px;">キャンセル</button>
-                            <button type="submit" class="button">会話開始</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            showModal(modalContent);
-            document.getElementById('start-gem-chat-form').addEventListener('submit', handleStartGemChatSubmit);
-        }
-
-        async function handleStartGemChatSubmit(event) {
-            event.preventDefault();
-            closeModal();
-            
-            const gemId = event.target.dataset.gemId;
-            const prompt = document.getElementById('gem-initial-prompt').value.trim();
-            const gem = appState.gems.find(g => g.id === gemId);
-            if (!prompt || !gem || !appState.apiKey) return;
-
-            const newChatId = generateUniqueId();
-            const initialChat = {
-                id: newChatId,
-                name: prompt.substring(0, 30) + (prompt.length > 30 ? '...' : ''),
-                isGemChat: true,
-                gemId: gemId,
-                timestamp: Date.now(),
-                history: []
+            const gem = {
+                gemId: id || crypto.randomUUID(),
+                name: name,
+                systemInstruction: instruction
             };
 
-            appState.chats = [initialChat].concat(appState.chats);
-            appState.currentChatId = newChatId;
-            appState.currentTab = 'chat';
-
-            await saveToDB(STORE_CHATS, initialChat);
-            
-            await handleChatSubmit(newChatId, prompt, gem.content);
-        }
-
-        function renderSettings(container) {
-            container.style.display = 'flex';
-            container.style.flexDirection = 'column';
-            container.className = 'flex-grow card';
-            container.innerHTML = `
-                <h2 style="font-size: 20px; font-weight: bold; color: #333; margin-bottom: 15px;">⚙️ 設定</h2>
+            try {
+                await putData(STORE_GEMS, gem);
                 
-                <!-- APIキー設定 -->
-                <div style="padding-bottom: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px;">
-                    <h3 style="font-size: 18px; font-weight: bold; color: #555; margin-bottom: 10px;">Gemini APIキー</h3>
-                    <form id="api-key-form">
-                        <input type="password" id="api-key-input" placeholder="あなたのGemini APIキーを入力" 
-                            class="input-area mb-4" value="${appState.apiKey}">
-                        <button type="submit" class="button">APIキーを保存</button>
-                    </form>
-                    <p class="text-sm" style="color: #888; margin-top: 10px;">APIキーはブラウザに安全に保存されます。</p>
-                </div>
+                // フォームをリセット
+                document.getElementById('gem-id-input').value = '';
+                document.getElementById('gem-name-input').value = '';
+                document.getElementById('gem-instruction-input').value = '';
+                document.getElementById('save-gem-button').textContent = 'Gemを保存';
 
-                <!-- データ管理 -->
-                <div>
-                    <h3 style="font-size: 18px; font-weight: bold; color: #555; margin-bottom: 10px;">データ管理</h3>
-                    <div style="display: flex; gap: 10px;">
-                        <button id="export-btn" class="button secondary flex-grow">
-                            ⬇️ エクスポート
-                        </button>
-                        <div style="position: relative; flex-grow: 1;">
-                            <input type="file" id="import-file" accept=".json" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;" onchange="handleImport(event)">
-                            <button class="button secondary" style="width: 100%;">
-                                ⬆️ インポート
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('api-key-form').addEventListener('submit', handleApiKeySubmit);
-            document.getElementById('export-btn').addEventListener('click', handleExport);
-        }
-
-        async function handleApiKeySubmit(event) {
-            event.preventDefault();
-            const apiKey = document.getElementById('api-key-input').value.trim();
-            if (apiKey) {
-                appState.apiKey = apiKey;
-                await saveToDB(STORE_SETTINGS, { key: 'apiKey', value: apiKey });
-                showMessage('success', 'APIキーを保存しました。');
-            } else {
-                appState.apiKey = '';
-                await saveToDB(STORE_SETTINGS, { key: 'apiKey', value: '' });
-                showMessage('success', 'APIキーをクリアしました。');
+                await renderGemList();
+                alert(`Gem「${name}」を保存しました。`);
+            } catch (error) {
+                console.error('Failed to save Gem:', error);
+                alert('Gemの保存に失敗しました。');
             }
         }
 
-        async function handleExport() {
+        /**
+         * Gemリストをレンダリングする
+         */
+        async function renderGemList() {
+            const listEl = document.getElementById('gem-list');
+            listEl.innerHTML = '';
             try {
-                const [chats, gems] = await Promise.all([
-                    getAllFromDB(STORE_CHATS),
-                    getAllFromDB(STORE_GEMS)
-                ]);
+                const gems = await getAllData(STORE_GEMS);
+                if (gems.length === 0) {
+                    listEl.innerHTML = '<p>Gemがありません。新しいGemを作成しましょう。</p>';
+                    return;
+                }
+
+                gems.forEach(gem => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('list-item');
+
+                    const nameEl = document.createElement('span');
+                    nameEl.innerHTML = `<strong>${gem.name}</strong>`;
+                    nameEl.classList.add('list-item-name');
+                    nameEl.onclick = () => selectGemForHome(gem); // クリックでホームに設定
+
+                    const actionsEl = document.createElement('div');
+                    actionsEl.classList.add('list-actions');
+
+                    // 編集ボタン
+                    const editBtn = document.createElement('button');
+                    editBtn.textContent = '編集';
+                    editBtn.classList.add('edit-button');
+                    editBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        editGem(gem);
+                    };
+                    actionsEl.appendChild(editBtn);
+
+                    // 削除ボタン
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '削除';
+                    deleteBtn.style.backgroundColor = '#dc3545';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteGem(gem.gemId, gem.name);
+                    };
+                    actionsEl.appendChild(deleteBtn);
+
+                    itemEl.appendChild(nameEl);
+                    itemEl.appendChild(actionsEl);
+                    listEl.appendChild(itemEl);
+                });
+            } catch (error) {
+                listEl.innerHTML = `<p class="error-message">Gemの読み込みに失敗しました: ${error.message}</p>`;
+                console.error('Failed to render Gem list:', error);
+            }
+        }
+
+        /**
+         * Gemを編集フォームにロードする
+         * @param {Object} gem - 編集するGemオブジェクト
+         */
+        function editGem(gem) {
+            document.getElementById('gem-id-input').value = gem.gemId;
+            document.getElementById('gem-name-input').value = gem.name;
+            document.getElementById('gem-instruction-input').value = gem.systemInstruction;
+            document.getElementById('save-gem-button').textContent = 'Gemを更新';
+            alert(`Gem「${gem.name}」を編集モードで開きました。`);
+            switchTab('gem');
+        }
+
+        /**
+         * Gemを削除する
+         * @param {string} gemId - 削除するGemのID
+         * @param {string} gemName - 削除するGemの名前
+         */
+        async function deleteGem(gemId, gemName) {
+            if (!window.confirm(`Gem「${gemName}」を本当に削除してもよろしいですか？`)) return;
+
+            try {
+                await deleteData(STORE_GEMS, gemId);
+                await renderGemList();
+                alert(`Gem「${gemName}」を削除しました。`);
+                console.log(`Gem ${gemId} deleted.`);
+            } catch (error) {
+                console.error('Failed to delete Gem:', error);
+                alert('Gemの削除に失敗しました。');
+            }
+        }
+
+        /**
+         * Gemをホームタブに設定し、新しいチャットを開始できるようにする
+         * @param {Object} gem - 選択されたGemオブジェクト
+         */
+        function selectGemForHome(gem) {
+            currentGem = gem;
+            document.getElementById('home-gem-status').textContent = `現在、Gem「${gem.name}」を使用中。メッセージを送信すると、このGemとの会話が始まります。`;
+            document.getElementById('home-gem-status').classList.remove('hidden', 'error-message');
+
+            // ホームタブに移動
+            switchTab('home');
+
+            // ホーム送信ボタンのイベントリスナーを一時的に変更
+            document.getElementById('home-send-button').removeEventListener('click', homeSendButtonHandler);
+            document.getElementById('home-send-button').addEventListener('click', homeSendButtonHandlerWithGem, { once: true });
+        }
+        
+        // Gem使用時と未使用時で処理を分けるためのハンドラ
+        const homeSendButtonHandler = () => {
+            const input = document.getElementById('home-input').value.trim();
+            if (input) {
+                startNewChat(input);
+            }
+        };
+
+        const homeSendButtonHandlerWithGem = () => {
+            const input = document.getElementById('home-input').value.trim();
+            if (input && currentGem) {
+                // GemIdを渡してチャット開始
+                startNewChat(input, currentGem.gemId);
+            } else {
+                 // Gemが設定されていない場合、通常のハンドラを再設定
+                document.getElementById('home-send-button').removeEventListener('click', homeSendButtonHandlerWithGem);
+                document.getElementById('home-send-button').addEventListener('click', homeSendButtonHandler);
+            }
+        };
+        // 初期設定
+        document.getElementById('home-send-button').addEventListener('click', homeSendButtonHandler);
+
+        // ===============================================
+        // 9. エクスポート・インポート
+        // ===============================================
+
+        /**
+         * 全てのデータ (チャットとGem) をJSON形式でエクスポートする
+         */
+        async function exportData() {
+            const statusEl = document.getElementById('settings-status');
+            statusEl.classList.add('hidden');
+            try {
+                const chats = await getAllData(STORE_CHATS);
+                const gems = await getAllData(STORE_GEMS);
 
                 const exportData = {
-                    version: DB_VERSION,
-                    timestamp: Date.now(),
+                    metadata: {
+                        app: 'GemAI',
+                        version: DB_VERSION,
+                        exportDate: new Date().toISOString()
+                    },
                     chats: chats,
                     gems: gems
                 };
 
-                const dataStr = JSON.stringify(exportData, null, 2);
-                const blob = new Blob([dataStr], { type: "application/json" });
+                const jsonString = JSON.stringify(exportData, null, 2);
+                const blob = new Blob([jsonString], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
-                
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `GemAI_export_${new Date().toISOString().split('T')[0]}.json`;
+                a.download = `GemAI_export_${new Date().toISOString().slice(0, 10)}.json`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                showMessage('success', 'データのエクスポートが完了しました。');
-
-            } catch (e) {
-                console.error("エクスポートエラー:", e);
-                showMessage('error', 'エクスポート中にエラーが発生しました。');
-            }
-        }
-
-        async function handleImport(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            try {
-                const fileContent = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => resolve(e.target.result);
-                    reader.onerror = reject;
-                    reader.readAsText(file);
-                });
                 
-                const importData = JSON.parse(fileContent);
+                statusEl.textContent = 'データのエクスポートが完了しました。';
+                statusEl.classList.remove('error-message', 'hidden');
 
-                if (!importData.chats || !importData.gems || importData.version !== DB_VERSION) {
-                    throw new Error('ファイルの形式が正しくないか、バージョンが一致しません。');
-                }
-
-                const db = await openDB();
-                const transaction = db.transaction([STORE_CHATS, STORE_GEMS], 'readwrite');
-                const chatStore = transaction.objectStore(STORE_CHATS);
-                const gemStore = transaction.objectStore(STORE_GEMS);
-
-                // 既存データをクリアしてインポート
-                chatStore.clear();
-                gemStore.clear();
-
-                importData.chats.forEach(chat => chatStore.put(chat));
-                importData.gems.forEach(gem => gemStore.put(gem));
-
-                await new Promise((resolve, reject) => {
-                    transaction.oncomplete = resolve;
-                    transaction.onerror = reject;
-                });
-
-                // アプリ状態をリロード
-                await loadInitialData();
-                showMessage('success', 'データのインポートが完了しました。');
-
-            } catch (e) {
-                console.error("インポートエラー:", e);
-                showMessage('error', `インポートに失敗しました: ${e.message || 'ファイルが破損している可能性があります。'}`);
+            } catch (error) {
+                statusEl.textContent = `エクスポートに失敗しました: ${error.message}`;
+                statusEl.classList.add('error-message');
+                statusEl.classList.remove('hidden');
+                console.error('Export error:', error);
             }
         }
 
-        // --- Modal Helper ---
-        function showModal(contentHTML) {
-            const container = document.getElementById('modal-container');
-            container.innerHTML = contentHTML;
-            container.style.display = 'flex';
+        /**
+         * JSONファイルからデータ (チャットとGem) をインポートする
+         */
+        async function importData() {
+            const fileInput = document.getElementById('import-file-input');
+            const statusEl = document.getElementById('settings-status');
+            statusEl.classList.add('hidden');
 
-            // モーダルの外側をクリックで閉じる
-            container.onclick = (e) => {
-                if (e.target === container) {
-                    closeModal();
+            if (fileInput.files.length === 0) {
+                statusEl.textContent = 'インポートするファイルを選択してください。';
+                statusEl.classList.add('error-message');
+                statusEl.classList.remove('hidden');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async (event) => {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+
+                    if (!importedData || !importedData.chats || !importedData.gems) {
+                        throw new Error('ファイルの構造が正しくありません。');
+                    }
+
+                    // チャットデータをインポート
+                    for (const chat of importedData.chats) {
+                        await putData(STORE_CHATS, chat);
+                    }
+                    // Gemデータをインポート
+                    for (const gem of importedData.gems) {
+                        await putData(STORE_GEMS, gem);
+                    }
+
+                    statusEl.textContent = `データのインポートが完了しました。チャット: ${importedData.chats.length}件、Gem: ${importedData.gems.length}件。`;
+                    statusEl.classList.remove('error-message', 'hidden');
+                    console.log('Import successful.');
+                } catch (error) {
+                    statusEl.textContent = `インポート処理中にエラーが発生しました: ${error.message}`;
+                    statusEl.classList.add('error-message');
+                    statusEl.classList.remove('hidden');
+                    console.error('Import error:', error);
                 }
             };
+
+            reader.onerror = (error) => {
+                statusEl.textContent = 'ファイルの読み込み中にエラーが発生しました。';
+                statusEl.classList.add('error-message');
+                statusEl.classList.remove('hidden');
+                console.error('File read error:', error);
+            };
+
+            reader.readAsText(file);
         }
 
-        function closeModal() {
-            const container = document.getElementById('modal-container');
-            container.style.display = 'none';
-            container.innerHTML = '';
-        }
+        // ===============================================
+        // 10. 初期化
+        // ===============================================
+        
+        // アプリケーション起動時の初期化
+        (async function initialize() {
+            try {
+                await openDB();
+                console.log('IndexedDB initialized successfully.');
+            } catch (error) {
+                alert(`アプリケーションの初期化に失敗しました。IndexedDBがサポートされていない可能性があります。${error.message}`);
+                console.error('Initialization Error:', error);
+            }
+            switchTab('home'); // 初期表示はホームタブ
+        })();
 
-        // --- Initialization ---
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // タブ切り替えリスナーを設定
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.addEventListener('click', handleTabChange);
-            });
-
-            // IndexedDBからデータをロードし、アプリをレンダリング
-            loadInitialData();
-        });
     </script>
 </body>
 </html>
